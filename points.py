@@ -1,5 +1,5 @@
-from Tkinter import *
-import Image
+from tkinter import *
+from PIL import Image
 import templateSkeletize2 as sk
 
 def binary(img):
@@ -96,7 +96,7 @@ def findCheckPoint(img):
 def checkFinger(r, v):
     reference=Image.open(r)
 
-    ref=binary(reference)        
+    ref=binary(reference)     #как оно работает   
         
     sk.tmpDelete(ref)
     rp=findCheckPoint(ref)
