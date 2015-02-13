@@ -10,16 +10,18 @@ for i in range(len(os.listdir(sys.argv[1]))):
     pathToTrace = sys.argv[1] + "\\" + os.listdir(sys.argv[1])[i]
     pathToText = sys.argv[2] + "\\" + os.listdir(sys.argv[2])[i]
 
-    with open(pathToTrace, "r") as tmpTraceFile:
-        tmpTrace = tmpTraceFile.read()
+#    with open(pathToTrace, "r") as tmpTraceFile:
+#        tmpTrace = tmpTraceFile.read()
 
     with open(pathToText, "r") as tmpTextFile:
         tmpText = tmpTextFile.read()
 
-    tmpTraceFile.close()
+#    tmpTraceFile.close()
     tmpTextFile.close()
 
-    pairsList.append(TextTracePair(tmpText, tmpTrace, pathToText, pathToTrace))
+#    pairsList.append(TextTracePair(tmpText, tmpTrace, pathToText, pathToTrace))
+    pairsList.append(TextTracePair(tmpText, pathToText, pathToTrace))
+    pairsList[i].setTrace(pathToTrace)
 
     pairsList[i].setMean()
     pairsList[i].setVariance()

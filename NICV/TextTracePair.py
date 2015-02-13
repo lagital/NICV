@@ -1,9 +1,13 @@
 import statistics
+from numpy import array
+from .scipy.io.wavfile import read
 class TextTracePair(object):
 
-    def __init__(self, loadedText, loadedTrace, pathToText, pathToTrace):
+#    def __init__(self, loadedText, loadedTrace, pathToText, pathToTrace):
+
+    def __init__(self, loadedText, pathToText, pathToTrace):
         self.text = loadedText
-        self.trace = [float(s) for s in loadedTrace.split()]
+#        self.trace = [float(s) for s in loadedTrace.split()]
         self.nicv = 0
         self.variance = 0
         self.pathToText = pathToText
@@ -14,6 +18,11 @@ class TextTracePair(object):
 
     def getMean(self):
         return self.mean
+
+    def setTrace(self, pathToTrace):
+        tmp = read(pathToTrace)
+        self.trace = array(tmp[1],dtype=float)
+        self.trace = 0;
 
     def getNicv(self):
         return self.nicv
