@@ -1,16 +1,35 @@
 import sys
 import os
-from .TextTracePair import TextTracePair
+import statistics
+from TextTracePair import TextTracePair
 
 pairsList = []
+meanList = []
 
 for i in range(len(os.listdir(sys.argv[1]))):
-    pathToTrace = os.listdir[i](sys.argv[1])
-    pathToText = os.listdir[i](sys.argv[0])
-    tmpTrace = open(pathToTrace, 'r')
-    tmpText = open(pathToText, 'r')
-    pairsList[i] = TextTracePair(tmpText, tmpTrace, pathToText, pathToTrace)
-    tmpTrace.close
-    tmpText.close
+    pathToTrace = sys.argv[1] + "\\" + os.listdir(sys.argv[1])[i]
+    pathToText = sys.argv[2] + "\\" + os.listdir(sys.argv[2])[i]
 
+    with open(pathToTrace, "r") as tmpTraceFile:
+        tmpTrace = tmpTraceFile.read()
 
+    with open(pathToText, "r") as tmpTextFile:
+        tmpText = tmpTextFile.read()
+
+    tmpTraceFile.close()
+    tmpTextFile.close()
+
+    pairsList.append(TextTracePair(tmpText, tmpTrace, pathToText, pathToTrace))
+
+    pairsList[i].setMean()
+    pairsList[i].setVariance()
+    meanList.append(pairsList[i].getMean())
+
+var = statistics.variance(meanList)
+
+for i in range(len(os.listdir(sys.argv[1]))):
+
+    tmpNicv = var / pairsList[i].getVariance()
+    pairsList[i].setNicv(tmpNicv)
+
+    print ((pairsList[i].getNicv()))
