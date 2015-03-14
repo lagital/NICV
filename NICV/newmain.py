@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import sys
 import os
 import statistics
@@ -7,12 +9,32 @@ parameters = len(sys.argv)
 code = None
 top = 0
 
-if parameters == 1 or sys.argv[1] == '-help':
-    help()
+def print_help():
+    print('')
+    print('Available parameters for SCApack:')
+    print('')
+    print('-print_help < print this info.')
+    print('')
+    print('-nicv code [-c int(N top traces)] [kalman|dwt] < calculate NICV for')
+    print('     traces with chosen code, mark N top traces')
+    print('     within group and print statistics.')
+    print('')
+    print('-nicv code [-s] < print statistics for traces with chosen code.')
+    print('')
+    print('-load code \path\to\traces [\path\to\clear\texts] [\path\to\encr\texts]')
+    print('load traces to database marking with chosen code.')
+    print('Attention: text file should have the same name as corresponding trace.')
+    print('')
+    print('-kalman code < kalman transform on traces with chosen code.')
+    print('')
+    print('-dwt code < discrete wavelet transform on traces with chosen code.')
+
+if parameters == 1 or sys.argv[1] == '-print_help':
+    print_help()
 
 elif sys.argv[1] == '-nicv':
     if parameters < 4 or parameters > 6:
-        help()
+        print_help()
     elif sys.argv[3] == '-c' and isinstance(sys.argv[4], int):
         code = sys.argv[2]
         top = sys.argv[4]
@@ -59,24 +81,6 @@ elif sys.argv[1] == '-dwt':
 # PROCEDURES:
 # -----------
 
-def help():
-    print('Available parameters for SCApack:')
-    print('')
-    print('-help < print this info.')
-    print('')
-    print('-nicv code [-c int(N top traces)] [kalman|dwt] < calculate NICV for')
-    print('     traces with chosen code, mark N top traces')
-    print('     within group and print statistics.')
-    print('')
-    print('-nicv code [-s] < print statistics for traces with chosen code.')
-    print('')
-    print('-load code \path\to\traces [\path\to\clear\texts] [\path\to\encr\texts]')
-    print('load traces to database marking with chosen code.')
-    print('Attention: text file should have the same name as corresponding trace.')
-    print('')
-    print('-kalman code < kalman transform on traces with chosen code.')
-    print('')
-    print('-dwt code < discrete wavelet transform on traces with chosen code.')
 
 """
 pairsList = []
