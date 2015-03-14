@@ -1,6 +1,6 @@
 import statistics
 from numpy import array
-from .scipy.io.wavfile import read
+from scipy.io.wavfile import read
 class TextTracePair(object):
 
 #    def __init__(self, loadedText, loadedTrace, pathToText, pathToTrace):
