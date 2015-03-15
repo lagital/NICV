@@ -13,7 +13,7 @@ def print_help():
     print('')
     print('Available parameters for SCApack:')
     print('')
-    print('-print_help < print this info.')
+    print('-help < print this info.')
     print('')
     print('-nicv code [-c int(N top traces)] [kalman|dwt] < calculate NICV for')
     print('     traces with chosen code, mark N top traces')
@@ -29,7 +29,7 @@ def print_help():
     print('')
     print('-dwt code < discrete wavelet transform on traces with chosen code.')
 
-if parameters == 1 or sys.argv[1] == '-print_help':
+if parameters == 1 or sys.argv[1] == '-help':
     print_help()
 
 elif sys.argv[1] == '-nicv':
