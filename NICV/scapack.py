@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import sys
+import peewee
+from peewee import *
 import os
 import statistics
 from TextTracePair import TextTracePair
@@ -9,6 +11,40 @@ parameters = len(sys.argv)
 code = None
 top = 0
 
+# <-- DATABASE INITIATION
+
+db = MySQLDatabase('scapack', user='scapack', passwd='scapack')
+
+class Trace(peewee.Model):
+
+    original_path = peewee.CharField()
+    code__id = peewee.IntegerField()
+    clear_text = peewee.TextField()
+    encr_text = peewee.TextField()
+    nicv = peewee.FloatField()
+    last_top = peewee.IntegerField()
+    is_top = peewee.IntegerField()
+    dwt_path = peewee.CharField()
+    kalman_path = peewee.CharField()
+
+    class Meta:
+        database = db
+
+class Code(peewee.Model):
+    symbol = peewee.CharField()
+    description = peewee.CharField()
+
+    class Meta:
+        database = db
+
+""" code = Code(symbol='peet', description='Peewee is cool')
+code.save()
+for code in Code.filter(symbol='peet'):
+    print code.description """
+
+# DATABASE INITIATION -->
+
+# <-- PROCEDURES INITIATION
 def print_help():
     print('')
     print('Available parameters for SCApack:')
@@ -21,13 +57,17 @@ def print_help():
     print('')
     print('-nicv code [-s] < print statistics for traces with chosen code.')
     print('')
-    print('-load code \path\to\traces [\path\to\clear\texts] [\path\to\encr\texts]')
+    print('-load code \path_to_traces [\path_to_clear_texts] [\path_to_encr_texts]')
     print('load traces to database marking with chosen code.')
     print('Attention: text file should have the same name as corresponding trace.')
     print('')
     print('-kalman code < kalman transform on traces with chosen code.')
     print('')
     print('-dwt code < discrete wavelet transform on traces with chosen code.')
+
+# PROCEDURES INITIATION -->
+
+# <-- MAIN
 
 if parameters == 1 or sys.argv[1] == '-help':
     print_help()
@@ -47,6 +87,9 @@ elif sys.argv[1] == '-nicv':
             print('TODO: NICV calculating on dwt transformed traces')
             #TODO: NICV calculating on dwt transformed traces
         else:
+
+            
+
             print('I\'m in classic NICV!')
             print('TODO: NICV calculating on original traces')
             #TODO: NICV calculating on original traces
@@ -77,9 +120,10 @@ elif sys.argv[1] == '-dwt':
         print('TODO: dwt transformation.')
         #TODO: dwt transformation.
 
-# -----------
-# PROCEDURES:
-# -----------
+# MAIN -->
+
+
+
 
 
 """
