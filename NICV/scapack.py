@@ -5,7 +5,7 @@ import peewee
 from peewee import *
 import os
 import statistics
-from TextTracePair import TextTracePair
+from TextTracePair import Trace_tmp
 
 parameters = len(sys.argv)
 code = None
@@ -75,9 +75,12 @@ if parameters == 1 or sys.argv[1] == '-help':
 elif sys.argv[1] == '-nicv':
     if parameters < 4 or parameters > 6:
         print_help()
-    elif sys.argv[3] == '-c' and isinstance(sys.argv[4], int):
+    elif sys.argv[3] == '-c':
+        meanList = []
+        traceList = []
         code = sys.argv[2]
         top = sys.argv[4]
+        print('-nicv code -c top')
         if parameters == 6 and sys.argv[5] == '-kalman':
             print('I\'m in NICV for kalman!')
             print('TODO: NICV calculating on kalman transformed traces')
@@ -88,11 +91,28 @@ elif sys.argv[1] == '-nicv':
             #TODO: NICV calculating on dwt transformed traces
         else:
 
-            
+            for trace in Trace.select().where(Trace.code__id == code):
+                print (trace.original_path + '...')
+                trace = Trace_tmp(trace.original_path)
+                trace.setMean()
+                trace.setVariance()
+                meanList.append(trace.getMean())
+                traceList.append(trace)
+
+            mVariance = statistics.variance(meanList)
+
+            for i in range(len(traceList)):
+
+                traceList[i].setNicv(mVariance / traceList[i].getVariance())
+                q = Trace.select().where(Trace.original_path == traceList[i].getPathToTrace()).get()
+                q.nicv = traceList[i].getNicv()
+                q.last_top = sys.argv[4]
+                q.save() # Will do the SQL update query.
 
             print('I\'m in classic NICV!')
-            print('TODO: NICV calculating on original traces')
-            #TODO: NICV calculating on original traces
+            print('TODO: NICV TOP + optimization')
+            #TODO: TODO: NICV TOP + optimization
+
     elif sys.argv[3] == '-s':
         code = sys.argv[2]
         print('I\'m in printing statistics of NICV!')
@@ -121,10 +141,6 @@ elif sys.argv[1] == '-dwt':
         #TODO: dwt transformation.
 
 # MAIN -->
-
-
-
-
 
 """
 pairsList = []
