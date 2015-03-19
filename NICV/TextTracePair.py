@@ -1,5 +1,6 @@
 import statistics
 import numpy
+import scipy
 from numpy import array
 from scipy.io.wavfile import read
 class Trace_tmp(object):
@@ -10,10 +11,27 @@ class Trace_tmp(object):
         self.variance = 0
         self.pathToText = ''
         self.pathToTrace = pathToTrace
+        self.fft = 0
 
         tmp = read(pathToTrace)
         self.trace = numpy.array(tmp[1], dtype=float)
         print(self.trace)
+
+    def setFft(self):
+        self.fft = scipy.fft(self.trace)
+
+    def getFft(self):
+        return self.fft;
+
+    def writeTrace(self, key):
+        return 'pathToFftTrace'
+        #TODO: writing traces using name from pathToTrace and choosing folder by key.
+        #TODO: regexp!
+
+    def setBandpass(self):
+        #self.trace = 0
+        return 0
+        #TODO: bandpass
 
     def setMean(self):
         self.mean = statistics.mean(self.trace)

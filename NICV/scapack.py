@@ -78,7 +78,7 @@ elif sys.argv[1] == '-nicv':
     elif sys.argv[3] == '-c':
         meanList = []
         traceList = []
-        code = sys.argv[2]
+        code_id = Code.get(Code.symbol == sys.argv[2]).id
         top = sys.argv[4]
         print('-nicv code -c top')
         if parameters == 6 and sys.argv[5] == '-kalman':
@@ -91,7 +91,7 @@ elif sys.argv[1] == '-nicv':
             #TODO: NICV calculating on dwt transformed traces
         else:
 
-            for trace in Trace.select().where(Trace.code__id == code):
+            for trace in Trace.select().where(Trace.code__id == code_id):
                 print (trace.original_path + '...')
                 trace = Trace_tmp(trace.original_path)
                 trace.setMean()
@@ -107,38 +107,64 @@ elif sys.argv[1] == '-nicv':
                 q = Trace.select().where(Trace.original_path == traceList[i].getPathToTrace()).get()
                 q.nicv = traceList[i].getNicv()
                 q.last_top = sys.argv[4]
-                q.save() # Will do the SQL update query.
+                q.save() #Will do the SQL update query.
 
             print('I\'m in classic NICV!')
-            print('TODO: NICV TOP + optimization')
-            #TODO: TODO: NICV TOP + optimization
+            print('TODO: NICV TOP + optimization + testing')
+            #TODO: TODO: NICV TOP + optimization + testing'
 
     elif sys.argv[3] == '-s':
-        code = sys.argv[2]
+        code_id = Code.get(Code.symbol == sys.argv[2]).id
+
+        for i in Trace.filter(code__id = code_id, is_top = 1):
+            print (i.nicv + ' - top ' + i.last_top)
+
         print('I\'m in printing statistics of NICV!')
-        print('TODO: NICV statistics printing')
-        #TODO: NICV statistics printing
+        print('TODO: testing.')
+        #TODO: testing
 
 elif sys.argv[1] == '-load':
     if parameters == 4:
-        code = sys.argv[2]
+        code_id = Code.get(Code.symbol == sys.argv[2]).id
+        if Code.filter(symbol = code) == -1:
+            q = Code(symbol = code, description = 'default')
+            q.save()
+        for i in range(len(os.listdir(sys.argv[3]))):
+            pathToTrace = sys.argv[3] + "\\" + os.listdir(sys.argv[3])[i]
+            trace = Trace(original_path = pathToTrace, code__id = code_id)
+            trace.save()
+
         print('I\'m loading traces!')
-        print('TODO: loading traces + clear and encr texts.')
-        #TODO: loading traces + clear and encr texts.
+        print('TODO: testing + loading clear and encr texts.')
+        #TODO: testing + loading clear and encr texts.
 
 elif sys.argv[1] == '-kalman':
     if parameters == 3:
-        code = sys.argv[2]
+        code_id = Code.get(Code.symbol == sys.argv[2]).id
         print('I\'m in kalman!')
         print('TODO: kalman transformation.')
         #TODO: kalman transformation.
 
 elif sys.argv[1] == '-dwt':
     if parameters == 3:
-        code = sys.argv[2]
+        code_id = Code.get(Code.symbol == sys.argv[2]).id
         print('I\'m in dwt!')
         print('TODO: dwt transformation.')
         #TODO: dwt transformation.
+
+elif sys.argv[1] == '-fft':
+    if parameters == 3:
+        code_id = Code.get(Code.symbol == sys.argv[2]).id
+        for trace in Trace.select().where(Trace.code__id == code_id):
+            print (trace.original_path + '...')
+            trace = Trace_tmp(trace.original_path)
+            trace.setFft()
+            pathToFft = trace.writeTrace(trace.getFft())
+            Trace.update(trace, fft = pathToFft)
+
+        print('I\'m in fft!')
+        print('TODO: testing of fft transformation.')
+        #TODO: testing of fft transformation.
 
 # MAIN -->
 
