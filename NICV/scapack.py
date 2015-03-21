@@ -6,6 +6,7 @@ from peewee import *
 import os
 import statistics
 from TextTracePair import Trace_tmp
+import mlpy
 
 parameters = len(sys.argv)
 code = None
@@ -90,14 +91,15 @@ elif sys.argv[1] == '-nicv':
             print('TODO: NICV calculating on dwt transformed traces')
             #TODO: NICV calculating on dwt transformed traces
         else:
+            for i in Trace.select().where(Trace.code__id == code_id):
+                print (i.original_path + '...')
+                i = Trace_tmp(i.original_path)
+                i.setMean()
+                i.setVariance()
+                meanList.append(i.getMean())
+                traceList.append(i)
 
-            for trace in Trace.select().where(Trace.code__id == code_id):
-                print (trace.original_path + '...')
-                trace = Trace_tmp(trace.original_path)
-                trace.setMean()
-                trace.setVariance()
-                meanList.append(trace.getMean())
-                traceList.append(trace)
+            i.draw(i.getTrace())
 
             mVariance = statistics.variance(meanList)
 
@@ -115,9 +117,9 @@ elif sys.argv[1] == '-nicv':
 
     elif sys.argv[3] == '-s':
         code_id = Code.get(Code.symbol == sys.argv[2]).id
-
-        for i in Trace.filter(code__id = code_id, is_top = 1):
-            print (i.nicv + ' - top ' + i.last_top)
+        print 'here'
+        for i in Trace.select().where(Trace.code__id == code_id):
+            print i.nicv, ' - top ', i.last_top
 
         print('I\'m in printing statistics of NICV!')
         print('TODO: testing.')
@@ -125,18 +127,22 @@ elif sys.argv[1] == '-nicv':
 
 elif sys.argv[1] == '-load':
     if parameters == 4:
-        code_id = Code.get(Code.symbol == sys.argv[2]).id
-        if Code.filter(symbol = code) == -1:
-            q = Code(symbol = code, description = 'default')
+        try:
+            code = Code.get(symbol = sys.argv[2])
+        except Code.DoesNotExist:
+            q = Code(symbol = sys.argv[2], description = 'default')
             q.save()
+        code_id = Code.get(Code.symbol == sys.argv[2]).id
         for i in range(len(os.listdir(sys.argv[3]))):
-            pathToTrace = sys.argv[3] + "\\" + os.listdir(sys.argv[3])[i]
+            pathToTrace = sys.argv[3] + "/" + os.listdir(sys.argv[3])[i]
             trace = Trace(original_path = pathToTrace, code__id = code_id)
             trace.save()
 
         print('I\'m loading traces!')
-        print('TODO: testing + loading clear and encr texts.')
-        #TODO: testing + loading clear and encr texts.
+        print('TODO:loading clear and encr texts.')
+        print('TODO:loading copying to path with original')
+        #TODO: loading clear and encr texts.
+        #TODO:loading copying to path with original
 
 elif sys.argv[1] == '-kalman':
     if parameters == 3:
@@ -148,6 +154,11 @@ elif sys.argv[1] == '-kalman':
 elif sys.argv[1] == '-dwt':
     if parameters == 3:
         code_id = Code.get(Code.symbol == sys.argv[2]).id
+        for i in Trace.select().where(Trace.code__id == code_id):
+            print (i.original_path + '...')
+            i = Trace_tmp(i.original_path)
+            x = i.getTrace()
+
         print('I\'m in dwt!')
         print('TODO: dwt transformation.')
         #TODO: dwt transformation.
@@ -155,12 +166,15 @@ elif sys.argv[1] == '-dwt':
 elif sys.argv[1] == '-fft':
     if parameters == 3:
         code_id = Code.get(Code.symbol == sys.argv[2]).id
-        for trace in Trace.select().where(Trace.code__id == code_id):
-            print (trace.original_path + '...')
-            trace = Trace_tmp(trace.original_path)
-            trace.setFft()
-            pathToFft = trace.writeTrace(trace.getFft())
-            Trace.update(trace, fft = pathToFft)
+        for i in Trace.select().where(Trace.code__id == code_id):
+            print (i.original_path + '...')
+            i = Trace_tmp(i.original_path)
+            i.setFft()
+            #pathToFft = i.writeTrace(i.getFft())
+            #Trace.update(i, fft = pathToFft)
+
+        i.draw(i.getTrace())
+        i.draw(i.getFft())
 
         print('I\'m in fft!')
         print('TODO: testing of fft transformation.')

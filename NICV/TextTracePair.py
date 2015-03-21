@@ -3,6 +3,9 @@ import numpy
 import scipy
 from numpy import array
 from scipy.io.wavfile import read
+import matplotlib.pyplot as plt
+import mlpy
+
 class Trace_tmp(object):
 
     def __init__(self, pathToTrace):
@@ -12,6 +15,7 @@ class Trace_tmp(object):
         self.pathToText = ''
         self.pathToTrace = pathToTrace
         self.fft = 0
+        self.dwt = 0
 
         tmp = read(pathToTrace)
         self.trace = numpy.array(tmp[1], dtype=float)
@@ -21,7 +25,14 @@ class Trace_tmp(object):
         self.fft = scipy.fft(self.trace)
 
     def getFft(self):
-        return self.fft;
+        return self.fft
+
+    def setDwt(self):
+        mlpy.wave.dwt(x=x, wf='d', k=6)
+        self.dwt = scipy.fft(self.trace)
+
+    def getDwt(self):
+        return self.dwt
 
     def writeTrace(self, key):
         return 'pathToFftTrace'
@@ -32,6 +43,12 @@ class Trace_tmp(object):
         #self.trace = 0
         return 0
         #TODO: bandpass
+
+    def draw(self, trace):
+        plt.plot(trace)
+        plt.ylabel('some numbers')
+        plt.show()
+        #TODO: drawing
 
     def setMean(self):
         self.mean = statistics.mean(self.trace)

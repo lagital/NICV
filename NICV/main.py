@@ -2,6 +2,7 @@ import sys
 import os
 import statistics
 from TextTracePair import TextTracePair
+import matplotlib.pyplot as plt
 
 pairsList = []
 meanList = []
