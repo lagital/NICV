@@ -157,7 +157,9 @@ elif sys.argv[1] == '-dwt':
         for i in Trace.select().where(Trace.code__id == code_id):
             print (i.original_path + '...')
             i = Trace_tmp(i.original_path)
-            x = i.getTrace()
+            i.setDwt()
+
+        i.draw(i.getDwt())
 
         print('I\'m in dwt!')
         print('TODO: dwt transformation.')

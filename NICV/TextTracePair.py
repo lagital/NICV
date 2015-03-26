@@ -4,7 +4,7 @@ import scipy
 from numpy import array
 from scipy.io.wavfile import read
 import matplotlib.pyplot as plt
-import mlpy
+import pywt
 
 class Trace_tmp(object):
 
@@ -28,8 +28,8 @@ class Trace_tmp(object):
         return self.fft
 
     def setDwt(self):
-        mlpy.wave.dwt(x=x, wf='d', k=6)
-        self.dwt = scipy.fft(self.trace)
+        cA, cD = pywt.dwt(self.trace, 'haar')
+        self.dwt = cA
 
     def getDwt(self):
         return self.dwt
