@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # The traces on which we'll lead our DPA
-__TABLE__ = "secmatv1_2006_04_0809"
+__TABLE__ = "trace"
 
 # The DES substitution box output targeted bit (in {0, 1, 2, 3}),
 # used for traces partitioning in the mono-bit DPA

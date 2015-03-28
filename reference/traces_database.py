@@ -39,29 +39,40 @@ except:
 else: db_name= 'pyPgSQL'; # Choosing "pyPgSQL.PgSQL"
 
 def parse_binary( raw_data ):
+	dat = []
 	"""
 	Takes a raw binary string containing data from our oscilloscope.
 	Returns the corresponding float vector.
+	"""
+
 	"""
 	ins =  4   # Size of int stored if the raw binary string
 	cur =  0   # Cursor walking in the string and getting data
 	cur += 12  # Skipping the global raw binary string header
 	whs =  unpack("i", raw_data[cur:cur+ins])[0] # Storing size of the waveform header
 	cur += whs # Skipping the waveform header
+	cur += ins
 	dhs =  unpack("i", raw_data[cur:cur+ins])[0] # Storing size of the data header
 	cur += dhs # Skipping the data header
 	bfs =  unpack("i", raw_data[cur-ins:cur])[0] # Storing the data size
+	print unpack("i", raw_data[cur-ins:cur])[0]
 	sc  =  bfs/ins # Samples Count - How much samples compose the wave
-	dat =  unpack("f"*sc, raw_data[cur:cur+bfs])
+	"""
+	# Understand and recover!!!
+	lenStr = len(raw_data)
+	test = 0
+	for i in range(lenStr):
+		dat.append(unpack("f", raw_data[0:4])[0])
+
 	return dat
 
 class traces_database:
 	""" Class providing database IOs """
 	# Some class constants
-	__host = "dpa.enst.fr"
-	__user = "guest"
-	__pass = "guest"
-	__db   = "production_traces"
+	__host = "127.0.0.1"
+	__user = "postgres"
+	__pass = "postgres"
+	__db   = "scapack"
 
 	# Private variables
 	__conn = None
@@ -76,7 +87,7 @@ class traces_database:
 			database = self.__db
 		)
 		self.__curs  = self.__conn.cursor()
-		self.__curs.execute("SELECT message,cryptogram,filecontent FROM \""+table+"\"")
+		self.__curs.execute("SELECT message,cipher,data FROM "+table+" where key='21c66842f6e96c9a670c9c61abd388f0'")
 
 	def __del__(self):
 		""" Automatically called method """
