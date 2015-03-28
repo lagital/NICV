@@ -3,6 +3,7 @@ import sys
 import struct
 import re
 import psycopg2
+import binascii
 
 conn = psycopg2.connect(
 	host = '127.0.0.1',
@@ -28,18 +29,18 @@ for i in range(len(os.listdir(sys.argv[1]))):
         len_lines = len(lines)
 
         buffer = struct.pack('i'*len_lines, *lines)
+        print buffer.encode('hex_codec')
+        """
         tmp_file.seek(0)
         tmp_file.truncate()
-        tmp_file.write(buffer)
-
+        tmp_file.write(binascii.hexlify(buffer))
+        """
         key = re.search('(?<=k=)(.*)(?=_m)', fileName).group(0)
         message = re.search('(?<=m=)(.*)(?=_c)', fileName).group(0)
         cipher = re.search('(?<=c=)(.*)(?=\.)', fileName).group(0)
 
-        fileData = tmp_file.read()
-
         query = "INSERT INTO trace (name, data, key, message, cipher) VALUES (%s,  %s, %s, %s, %s);"
-        content = (fileName, fileData, key, message, cipher)
+        content = (fileName, buffer.encode('hex_codec'), key, message, cipher)
 
         tmp_file.close()
 
@@ -52,7 +53,8 @@ for i in range(len(os.listdir(sys.argv[1]))):
         print 'message: ', message
         print 'cipher: ', cipher
         print fileName + '\nDone'
-
+        print '------------------------------------------------'
+        print cursor.execute('select data from trace;')
     """
     for j in range(len(lines)):
         lines[j] = "{0:b}".format(int(lines[j]))
