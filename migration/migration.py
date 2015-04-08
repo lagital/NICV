@@ -3,6 +3,8 @@ import sys
 import struct
 import re
 import psycopg2
+from array import array
+import binascii
 
 print 'Initialize db connection: Start'
 conn = psycopg2.connect(
@@ -33,15 +35,22 @@ for i in range(lenDir):
         lines[j] = int(lines[j])
     len_lines = len(lines)
 
-    buffer = struct.pack('i'*len_lines, *lines)
+    buffer = struct.pack('<'+'h'*len_lines, *lines)
+
+    buffer = struct.pack('h'*len_lines, *lines)
+    print 'HERE:', sys.getsizeof(buffer.encode('hex_codec'))
+
+    print '-------'
+    #print str(buffer)
     key = re.search('(?<=k=)(.*)(?=_m)', fileName).group(0)
     message = re.search('(?<=m=)(.*)(?=_c)', fileName).group(0)
     cipher = re.search('(?<=c=)(.*)(?=\.)', fileName).group(0)
+    #hex_buffer = ''.join( [ "%02X " % ord( x ) for x in buffer ] ).strip()
+    #print sys.getsizeof(hex_buffer)
+    query = "INSERT INTO trace2 (name, data, key, message, cipher) VALUES (%s,  %s, %s, %s, %s);"
+    content = (fileName, buffer.encode('hex_codec'), key, message, cipher)
 
     print 'File number: ', i, '/', lenDir
-
-    query = "INSERT INTO trace (name, data, key, message, cipher) VALUES (%s,  %s, %s, %s, %s);"
-    content = (fileName, buffer.encode('hex_codec'), key, message, cipher)
 
     cursor.execute(query, content)
 

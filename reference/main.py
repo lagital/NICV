@@ -17,6 +17,7 @@
 
 from des_breaker import des_breaker
 from traces_database import traces_database
+import time
 
 from constants import __TABLE__
 from constants import __OUTPUT_FILE__
@@ -46,31 +47,37 @@ def main():
 	out( "# Columns: Iteration Stability Subkey0 ... Subkey7" )
 	
 	# Searching for the key
-	print 'searching for the key..'
+	#print 'searching for the key..'
 	while fullkey == None:
+		start_time = time.time()
+
 		msg, crypt, trace= tdb.get_trace()
+
 		brk.process(msg, trace)
 		iteration+= 1
-		text= str(iteration).rjust(4) + " "
+
+		#text= str(iteration).rjust(4) + " "
 		# When enough iterations, trying to guess subkeys
-		if iteration >= __ITERATION_THRESHOLD__:
+		#if iteration >= __ITERATION_THRESHOLD__:
+		if iteration >= __ITERATION_THRESHOLD__ :
 			# Computing new subkeys and stability mark
-			print 'computing new subkeys...'	
 			loc_subkeys= brk.get_subkeys()
+
 			if loc_subkeys == subkeys:
 				stability+= 1
 			else:
 				subkeys= loc_subkeys
 				stability= 0
 			# Gathering some informations
-			text+= str(stability).rjust(3)
-			for sk in subkeys:
-				text+= " " + str(sk).rjust(2)
+			#text+= str(stability).rjust(3)
+			#for sk in subkeys:
+				#text+= " " + str(sk).rjust(2)
 			# If subkeys have been stable for long enough, try to guess the full key
-			if stability >= __STABILITY_THRESHOLD__:
+			if stability >= __STABILITY_THRESHOLD__ :
+				print 'Done'
 				fullkey= brk.get_key(msg, crypt)
 		# Flushing output
-		out( text )
+		#out( text )
 
 	# End of Attack
 	out( "# Key: " + str(fullkey) + "\n" )

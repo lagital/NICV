@@ -2,6 +2,7 @@
 # some messages, using de DES algorithm, according to the provided
 # side channel traces.
 # Copyright (C) 2008 Florent Flament (florent.flament@telecom-paristech.fr)
+# Copyright (C) 2009 Laurent SAUVAGE (laurent.sauvage@telecom-paristech.fr)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,9 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from sbox_breaker import sbox_breaker
+# DPACONTEST modules
+from   sbox_breaker import sbox_breaker
 import des_block
-import cloud
+from   constants    import *
 
 class des_breaker:
 	"""
@@ -26,30 +28,32 @@ class des_breaker:
 	__sbox_breakers= None
 	
 	def __init__(self):
-		"Builds 8 sbox breakers. One for each sbox."
+		"""
+		Builds one breaker per attacked sbox
+		(depends on the parameter SB_LST, see constant.py).
+		"""
 		self.__sbox_breakers= []
 		self.__sbox_broken= []
-		for i in range(8):
+		for i in SB_LST:
 			self.__sbox_breakers.append( sbox_breaker(i) )
 			self.__sbox_broken.append( False )
-	
+
 	def process(self, msg, trace):
 		"""
 		Processes the given trace.
 		Returns None as long as the key as not been found.
 		Returns the key as a hex string when found.
 		"""
-		tmp_len = len(self.__sbox_breakers)
-		for i in range( tmp_len ):
-			self.__sbox_breakers[i].process( msg, trace )
+		for sbox_breaker in self.__sbox_breakers:
+			sbox_breaker.process( msg, trace )
 	
 	def get_subkeys(self):
 		"""
 		Returns a vector of currently best sboxes subkeys.
 		This is an array of 8 integers.
 		"""
-		return map( lambda i:self.__sbox_breakers[i].get_key(), range(8) )
-
+		return map( lambda sb_b: sb_b.get_key(), self.__sbox_breakers )
+		
 	def get_key(self, msg, crypt):
 		"""
 		Guess the 8 last bits of the full key, using cryptogram.
@@ -69,9 +73,7 @@ class des_breaker:
 			cd0= uncomp_cd0.fill( des_block.__from_int__(i, 8) )
 			key= cd0.pc1(-1).fill( des_block.__from_int__(0, 8) )
 			cip= des_block.des_block(msg, 64).encipher(key)
-			tmp = cip.value()
-			print tmp
-			if tmp == des_block.des_block(crypt,64).value():
+			if cip == des_block.des_block(crypt,64):
 				return key
 		return None
 
