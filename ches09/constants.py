@@ -39,9 +39,9 @@ BEGIN_N, END_N = None, None # All files
 # ---------------------
 
 # Trace Zoom in
-#BEGIN_T, END_T = None, None # Full trce
+BEGIN_T, END_T = None, None # Full trce
 
-BEGIN_T, END_T = 5700, 5900 # Zoom in on power consumption of first round
+#BEGIN_T, END_T = 5700, 5900 # Zoom in on power consumption of first round
                             # @note Entire round1 clokc cycle is in [5500:6200]
 
 # DSP

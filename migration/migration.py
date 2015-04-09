@@ -16,8 +16,9 @@ conn = psycopg2.connect(
 cursor = conn.cursor()
 print 'Initialize db connection: Done'
 
-lenDir = len(os.listdir(sys.argv[1]))
 listDir = os.listdir(sys.argv[1])
+lenDir = len(listDir)
+
 print 'Files for migration: ', lenDir
 
 for i in range(lenDir):
@@ -35,13 +36,14 @@ for i in range(lenDir):
         lines[j] = int(lines[j])
     len_lines = len(lines)
 
-    buffer = struct.pack('<'+'h'*len_lines, *lines)
+    #buffer = struct.pack('<'+'h'*len_lines, *lines)
 
     buffer = struct.pack('h'*len_lines, *lines)
-    print 'HERE:', sys.getsizeof(buffer.encode('hex_codec'))
 
-    print '-------'
     #print str(buffer)
+
+    #print fileName
+
     key = re.search('(?<=k=)(.*)(?=_m)', fileName).group(0)
     message = re.search('(?<=m=)(.*)(?=_c)', fileName).group(0)
     cipher = re.search('(?<=c=)(.*)(?=\.)', fileName).group(0)
@@ -54,11 +56,10 @@ for i in range(lenDir):
 
     cursor.execute(query, content)
 
-    print '------------------------------------------------'
-    print 'key: ', key
-    print 'message: ', message
-    print 'cipher: ', cipher
-    print fileName + '\nDone'
+    #print '------------------------------------------------'
+    #print 'key: ', key
+    #print 'message: ', message
+    #print 'cipher: ', cipher
 
 conn.commit()
 print 'COMMIT IT!'

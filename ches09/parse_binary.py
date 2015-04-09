@@ -39,10 +39,11 @@ def parse_binary( raw_data ):
 	dat =  unpack("f"*sc, raw_data[cur:cur+bfs])
 	"""
 	# Understand and recover!!!
-	lenStr = len(raw_data[0])
-	print lenStr
+	lenStr = len(raw_data)
+	#print lenStr
+	#print unpack("f", raw_data[(0*4):(0*4+4)])[0]
 	for i in range(lenStr/4):
-		dat.append(unpack("f", raw_data[0][(i*4):(i*4+4)]))
+		dat.append(unpack("f", raw_data[(i*4):(i*4+4)])[0])
 	#dat.append(unpack("f", raw_data[(3256*4):(3256*4+4)])[0])
-	#print '!!!', sys.sizeof(dat)
+	#print '!!!', len(dat)
 	return dat

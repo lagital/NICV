@@ -1,4 +1,4 @@
-# Table: trace
+# Table: trace2
 # Stability threshold: 100
 # Iteration threshold: 1
 #
