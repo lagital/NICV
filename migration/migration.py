@@ -36,9 +36,9 @@ for i in range(lenDir):
         lines[j] = int(lines[j])
     len_lines = len(lines)
 
-    #buffer = struct.pack('<'+'h'*len_lines, *lines)
+    buffer = struct.pack('<'+'h'*len_lines, *lines)
 
-    buffer = struct.pack('h'*len_lines, *lines)
+    #buffer = struct.pack('h'*len_lines, *lines)
 
     #print str(buffer)
 
@@ -49,7 +49,7 @@ for i in range(lenDir):
     cipher = re.search('(?<=c=)(.*)(?=\.)', fileName).group(0)
     #hex_buffer = ''.join( [ "%02X " % ord( x ) for x in buffer ] ).strip()
     #print sys.getsizeof(hex_buffer)
-    query = "INSERT INTO trace2 (name, data, key, message, cipher) VALUES (%s,  %s, %s, %s, %s);"
+    query = "INSERT INTO trace3 (name, data, key, message, cipher) VALUES (%s,  %s, %s, %s, %s);"
     content = (fileName, buffer.encode('hex_codec'), key, message, cipher)
 
     print 'File number: ', i, '/', lenDir

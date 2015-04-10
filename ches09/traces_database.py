@@ -76,7 +76,7 @@ class traces_database:
 		# Building list of content
 		try:
 			print "Building files list, please wait..."
-			cmd= "SELECT name FROM "+self.__table
+			cmd= "SELECT name FROM "+self.__table+" WHERE key = 'be5466cf34e90c6cc0ac29b7c97c50dd'"
 			# <DEBUG>
 			#cmd= "SELECT filename FROM "+self.__table+" LIMIT 1000"
 			# <\DEBUG>
@@ -86,6 +86,7 @@ class traces_database:
 				one= self.__curs.fetchone()
 				if one:
 					self.__dbd.append( one[0] ) # @note fetchone has returned a list with a single element "filename"
+					print 'files readed: ', len(self.__dbd)
 				else: # End of DataBase reached
 					break
 		except db.DatabaseError, e:
