@@ -1,5 +1,0 @@
-# Table: trace2
-# Stability threshold: 100
-# Iteration threshold: 1
-#
-# Columns: Iteration Stability Subkey0 ... Subkey7
