@@ -19,6 +19,61 @@ print 'Initialize db connection: Done'
 listDir = os.listdir(sys.argv[1])
 lenDir = len(listDir)
 
+traces = []
+
+for i in range(lenDir):
+
+    fileName = listDir[i]
+
+    pathToTrace = sys.argv[1] + "/" + fileName
+    tmpContent = open(pathToTrace, "r").read()
+
+    key = re.search('(?<=k=)(.*)(?=_m)', fileName).group(0)
+    message = re.search('(?<=m=)(.*)(?=_c)', fileName).group(0)
+    cipher = re.search('(?<=c=)(.*)(?=\.)', fileName).group(0)
+
+    query = "INSERT INTO trace (name, data, key, message, cipher, kind) VALUES (%s,  %s, %s, %s, %s, %s);"
+    content = (fileName, tmpContent, key, message, cipher, 'des_first')
+
+    tmpContent.close()
+
+    print 'File number: ', i, '/', lenDir
+
+    cursor.execute(query, content)
+
+    print '------------------------------------------------'
+    print 'key: ', key
+    print 'message: ', message
+    print 'cipher: ', cipher
+
+conn.commit()
+print 'COMMIT IT!'
+
+"""
+
+#OLD VERSION
+
+import os
+import sys
+import struct
+import re
+import psycopg2
+from array import array
+import binascii
+
+print 'Initialize db connection: Start'
+conn = psycopg2.connect(
+	host = '127.0.0.1',
+	database = 'scapack',
+	user = 'postgres',
+	password = 'postgres'
+)
+cursor = conn.cursor()
+print 'Initialize db connection: Done'
+
+listDir = os.listdir(sys.argv[1])
+lenDir = len(listDir)
+
 print 'Files for migration: ', lenDir
 
 for i in range(lenDir):
@@ -49,7 +104,7 @@ for i in range(lenDir):
     cipher = re.search('(?<=c=)(.*)(?=\.)', fileName).group(0)
     #hex_buffer = ''.join( [ "%02X " % ord( x ) for x in buffer ] ).strip()
     #print sys.getsizeof(hex_buffer)
-    query = "INSERT INTO trace3 (name, data, key, message, cipher) VALUES (%s,  %s, %s, %s, %s);"
+    query = "INSERT INTO trace (name, data, key, message, cipher) VALUES (%s,  %s, %s, %s, %s);"
     content = (fileName, buffer.encode('hex_codec'), key, message, cipher)
 
     print 'File number: ', i, '/', lenDir
@@ -64,22 +119,4 @@ for i in range(lenDir):
 conn.commit()
 print 'COMMIT IT!'
 
-"""
-    for j in range(len(lines)):
-        lines[j] = "{0:b}".format(int(lines[j]))
-        #print lines[j]
-    tmp_file.write(str(lines))
-    tmp_file.close()
-    #[int(m) for m in lines]
-    #for t in range (30):
-    #    print
-
-    with open(pathToTrace, "r") as tmpTraceFile:
-        tmpArray = tmpTraceFile.readlines()
-        tmpTrace = tmpTraceFile.read()
-        #lines = (line.rstrip('\n') for line in open(pathToTrace, "r"))
-        lines = open(tmpTraceFile).read().splitlines()
-    tmpTraceFile.close()
-for i in range (24):
-    print lines[i]
 """

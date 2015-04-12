@@ -113,5 +113,5 @@ def main():
 		out( "# Key: " + str(fullkey) + "\n" )
 
 		fd.close()
-
+		sys.exit(1)
 if __name__ == "__main__": main()

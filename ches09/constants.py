@@ -23,8 +23,8 @@ DB_or_FS  = False # From the filesystem (False)
 
 # Traces on which we'll lead our DPA
 TABLE     = "secmatv1_2006_04_0809" # For traces from the DataBase
-#DIRECTORY = "/home/traces/secmatv1_2006_04_0809" # For traces from the filesystem on attack
-DIRECTORY = "/traces/secmatv1_2006_04_0809" # For traces from the filesystem on attack2
+DIRECTORY = "/home/agita/Downloads/secmatv1_2006_04_0809/secmatv1_2006_04_0809" # For traces from the filesystem on attack
+#DIRECTORY = "/traces/secmatv1_2006_04_0809" # For traces from the filesystem on attack2
 
 # Files order
 #ORDER = "none"
