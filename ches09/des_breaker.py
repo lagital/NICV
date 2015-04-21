@@ -74,9 +74,10 @@ class des_breaker:
 			key= cd0.pc1(-1).fill( des_block.__from_int__(0, 8) )
 			cip= des_block.des_block(msg, 64).encipher(key)
 			if cip == des_block.des_block(crypt,64):
+				print 'I am really here!'
 				return key
 		return None
-
+"""
 def test():
 	db= des_breaker()
 	# Setting good subkeys
@@ -91,5 +92,7 @@ def test():
 	# Key should be 6A64786A64786A64
 	print "key found:", db.get_key("993fa9b70fe852af", "09b1a3ea6377adf2")
 
+
 if __name__ == "__main__":
 	test()
+"""

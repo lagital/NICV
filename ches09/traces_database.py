@@ -45,10 +45,10 @@ else: db_name= 'pyPgSQL'; # Choosing "pyPgSQL.PgSQL"
 class traces_database:
 	""" Class providing database IOs """
 	# Some class constants
-	__host = "dpa.enst.fr"
-	__user = "guest"
-	__pass = "guest"
-	__db   = "production_traces"
+	__host = "127.0.0.1"
+	__user = "postgres"
+	__pass = "postgres"
+	__db   = "scapack"
 
 	# Private variables
 	__conn = None
@@ -76,7 +76,7 @@ class traces_database:
 		# Building list of content
 		try:
 			print "Building files list, please wait..."
-			cmd= "SELECT filename FROM "+self.__table
+			cmd= "SELECT name FROM "+self.__table+" WHERE kind = 'des_first'"
 			# <DEBUG>
 			#cmd= "SELECT filename FROM "+self.__table+" LIMIT 1000"
 			# <\DEBUG>
@@ -118,7 +118,7 @@ class traces_database:
 		self.__i+= 1;
 
 		try:
-			cmd= "SELECT message,cryptogram,filecontent FROM "+self.__table+" WHERE filename = '"+trace_name+"'"
+			cmd= "SELECT message, cipher, data FROM "+self.__table+" WHERE name = '"+trace_name+"'"
 			self.__curs.execute( cmd )
 			one= self.__curs.fetchone()
 			msg, crypt, raw_data= one
@@ -134,7 +134,7 @@ class traces_database:
 		Returns the raw trace (header plus float vector) of <filename> 
 		"""
 		try:
-			cmd= "SELECT filecontent FROM "+self.__table+" WHERE filename = '"+filename+"'"
+			cmd= "SELECT encode(data, 'escape') FROM "+self.__table+" WHERE filename = '"+filename+"'"
 			self.__curs.execute( cmd )
 			raw_data= self.__curs.fetchone()
 			if db_name=='pgdb':
@@ -144,6 +144,7 @@ class traces_database:
 			print e
 			sys.exit(1)
 
+"""
 def test():
 	tdb= traces_database("secmatv3_20080424"); # /!\ Not the table to use for the contest
 	for i in range(10):
@@ -153,3 +154,4 @@ def test():
 if __name__ == "__main__":
 	print "Using "+db_name+" DB API"
 	test()
+"""

@@ -19,6 +19,7 @@
 # Global modules
 from   os import path, mkdir
 import sys # For exit
+import time
 
 # DPACONTEST modules
 from des_breaker       import des_breaker
@@ -28,6 +29,10 @@ from dsp               import dsp
 from constants         import *
 
 def main():
+
+	# Start timer
+	start_time = time.time()
+
 	# Preparing output directory
 	OUTDIR= outdir()
 	if not path.isdir( OUTDIR ):
@@ -112,6 +117,9 @@ def main():
 		# End of Attack
 		out( "# Key: " + str(fullkey) + "\n" )
 
+		print "# Execution time: ", time.time() - start_time
+
 		fd.close()
 		sys.exit(1)
+
 if __name__ == "__main__": main()

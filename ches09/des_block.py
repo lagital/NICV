@@ -345,6 +345,7 @@ class des_block:
 		"""
 		return self.value() != db.value()
 
+"""
 def test():
 	msg= des_block("48656c6c6f202121", 64)
 	key= des_block("6b65796b65796b65", 64)
@@ -360,3 +361,4 @@ def test():
 
 if __name__ == "__main__":
 	test()
+"""

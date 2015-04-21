@@ -105,7 +105,7 @@ class traces_filesystem:
 		raw_data= self.__fd.read()
 
 		return get_msg( trace_name ), get_cph( trace_name ), parse_binary( raw_data )
-
+"""
 def test():
 	tfs= traces_filesystem("/home/traces/secmatv1_2006_04_0809"); # /!\ Not the table to use for the contest
 	for i in range(10):
@@ -114,3 +114,4 @@ def test():
 
 if __name__ == "__main__":
 	test()
+"""
