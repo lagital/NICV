@@ -7,46 +7,16 @@ import os
 import statistics
 from TextTracePair import Trace_tmp
 import mlpy
+import Database
 
 parameters = len(sys.argv)
 code = None
 top = 0
 
-# <-- DATABASE INITIATION
-
-db = MySQLDatabase('scapack', user='scapack', passwd='scapack')
-
-class Trace(peewee.Model):
-
-    original_path = peewee.CharField()
-    code__id = peewee.IntegerField()
-    clear_text = peewee.TextField()
-    encr_text = peewee.TextField()
-    nicv = peewee.FloatField()
-    last_top = peewee.IntegerField()
-    is_top = peewee.IntegerField()
-    dwt_path = peewee.CharField()
-    kalman_path = peewee.CharField()
-
-    class Meta:
-        database = db
-
-class Code(peewee.Model):
-    symbol = peewee.CharField()
-    description = peewee.CharField()
-
-    class Meta:
-        database = db
-
-""" code = Code(symbol='peet', description='Peewee is cool')
-code.save()
-for code in Code.filter(symbol='peet'):
-    print code.description """
-
-# DATABASE INITIATION -->
-
 # <-- PROCEDURES INITIATION
+
 def print_help():
+
     print('')
     print('Available parameters for SCApack:')
     print('')
@@ -79,7 +49,7 @@ elif sys.argv[1] == '-nicv':
     elif sys.argv[3] == '-c':
         meanList = []
         traceList = []
-        code_id = Code.get(Code.symbol == sys.argv[2]).id
+        code = sys.argv[2]
         top = sys.argv[4]
         print('-nicv code -c top')
         if parameters == 6 and sys.argv[5] == '-kalman':
@@ -91,15 +61,37 @@ elif sys.argv[1] == '-nicv':
             print('TODO: NICV calculating on dwt transformed traces')
             #TODO: NICV calculating on dwt transformed traces
         else:
-            for i in Trace.select().where(Trace.code__id == code_id):
-                print (i.original_path + '...')
-                i = Trace_tmp(i.original_path)
-                i.setMean()
-                i.setVariance()
-                meanList.append(i.getMean())
+            db = Database()
+
+            query = "SELECT name FROM trace WHERE kind = '"+code+"'"
+            db.cur.execute(query)
+            fileList = []
+
+            while 1:
+                one = db.cur.fetchone()
+                if one:
+                    fileList.append(one[0])
+                else:
+                    # End of DataBase reached
+                    break
+
+            one = db.cur.fetchone()
+            msg, crypt, raw_data = one
+
+            for i in range (len(fileList)):
+
+                query = "SELECT message, cipher, data FROM trace WHERE name = '"+fileList[i]+"'"
+                db.cur.execute(query)
+                one = db.cur.fetchone()
+                msg, crypt, raw_data = one
+
+                t = Trace_tmp(i.original_path)
+                t.setMean()
+                t.setVariance()
+                meanList.append(t.getMean())
                 traceList.append(i)
 
-            i.draw(i.getTrace())
+            t.draw(t.getTrace())
 
             mVariance = statistics.variance(meanList)
 

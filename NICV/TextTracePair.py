@@ -16,11 +16,11 @@ class Trace_tmp(object):
         self.pathToTrace = pathToTrace
         self.fft = 0
         self.dwt = 0
-
+"""
         tmp = read(pathToTrace)
         self.trace = numpy.array(tmp[1], dtype=float)
         print(self.trace)
-
+"""
     def setFft(self):
         self.fft = scipy.fft(self.trace)
 

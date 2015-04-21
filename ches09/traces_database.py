@@ -122,8 +122,8 @@ class traces_database:
 			self.__curs.execute( cmd )
 			one= self.__curs.fetchone()
 			msg, crypt, raw_data= one
-			if db_name=='pgdb':
-		 		raw_data= db.unescape_bytea( raw_data )
+			#if db_name=='pgdb':
+		 		#raw_data= db.unescape_bytea( raw_data )
 			return msg, crypt, parse_binary( str(raw_data) )
 		except db.DatabaseError, e:
 			print e
