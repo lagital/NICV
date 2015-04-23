@@ -33,9 +33,8 @@ for i in range(lenDir):
 
     fsresult = parse_binary(raw_data)
     #print fsresult
-    print raw_data
+    #print raw_data
     print 'LEN: ', len(fsresult)
-    time.sleep(5)
 
     query = "DELETE FROM trace WHERE kind = 'migtst'"
     cursor.execute(query)
@@ -56,7 +55,7 @@ for i in range(lenDir):
 
     bytes = map(ord, raw_data)
 
-    print bytes
+    #print bytes
 
     #encoded = raw_data.encode('hex')
     """
@@ -87,7 +86,7 @@ for i in range(lenDir):
 #------------------------------------------- testing place
 
     dbresult = parse_binary(raw_data)
-    print dbresult
+    #print dbresult
     print 'LEN: ', len(dbresult)
 
 """

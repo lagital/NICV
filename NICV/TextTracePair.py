@@ -1,26 +1,24 @@
 import statistics
 import numpy
+from numpy import array
 import scipy
 from numpy import array
 from scipy.io.wavfile import read
 import matplotlib.pyplot as plt
 import pywt
+from parse_binary import parse_binary
+import Database
+import time
 
-class Trace_tmp(object):
+class Kind(object):
 
-    def __init__(self, pathToTrace):
+    def __init__(self):
         self.text = ''
-        self.nicv = 0
         self.variance = 0
         self.pathToText = ''
-        self.pathToTrace = pathToTrace
         self.fft = 0
         self.dwt = 0
-"""
-        tmp = read(pathToTrace)
-        self.trace = numpy.array(tmp[1], dtype=float)
-        print(self.trace)
-"""
+
     def setFft(self):
         self.fft = scipy.fft(self.trace)
 
@@ -56,11 +54,56 @@ class Trace_tmp(object):
     def getMean(self):
         return self.mean
 
-    def getNicv(self):
-        return self.nicv
+    def nicv(self, db, idList):
 
-    def setNicv(self, nicv):
-        self.nicv = nicv
+        start_time = time.time()
+
+        listLen = len(idList)
+        nicvList = [(0, 0)]
+        errList = []
+
+        for i in range (listLen):
+
+            meanList = []
+            varList = []
+
+            query = "SELECT data FROM trace WHERE id = "+str(idList[i])+";"
+            db.cur.execute(query)
+            raw_data = db.cur.fetchone()[0]
+
+            try:
+                parse_data = parse_binary(raw_data)
+
+                mean = numpy.array(parse_data).mean()
+                var = numpy.array(parse_data).var()
+                meanList.append(mean)
+                varList.append(var)
+
+                if i%10000 == 0:
+                    print 'Traces processed: ', i, ' / ', listLen
+            except:
+                errList.append(idList[i])
+                print 'Error. Trace ID: ', idList[i]
+                continue
+
+        print 'All traces for the current kind are processed.'
+        print 
+
+        mVar = numpy.array(meanList).var()
+
+        for j in range(len(idList)):
+
+            nicv = mVar / varList[j]
+            nicvList[j] = idList[j], nicv
+
+            query = "INSERT INTO trace (nicv) VALUES (%s) WHERE id = "+str(idList[j])+";"
+            content = (nicv)
+            db.cur.execute(query, content)
+
+        db.conn.commit()
+
+        print('NICV is calculated for the current kind.')
+        print 'Execution time: ', time.time() - start_time
 
     def getText(self):
         return self.text

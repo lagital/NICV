@@ -20,9 +20,9 @@
 # Traces access 
 #DB_or_FS  = True  # From the DataBase
 DB_or_FS  = True # From the filesystem (False)
-IP = '127.0.0.1',
-DB = 'scapack',
-USER = 'postgres',
+IP = '127.0.0.1'
+DB = 'scapack'
+USER = 'postgres'
 PASSWORD = 'postgres'
 
 # Traces on which we'll lead our DPA

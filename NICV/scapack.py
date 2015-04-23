@@ -5,9 +5,9 @@ import peewee
 from peewee import *
 import os
 import statistics
-from TextTracePair import Trace_tmp
+from TextTracePair import Kind
 import mlpy
-import Database
+from Database import Database
 
 parameters = len(sys.argv)
 code = None
@@ -49,9 +49,9 @@ elif sys.argv[1] == '-nicv':
     elif sys.argv[3] == '-c':
         meanList = []
         traceList = []
-        code = sys.argv[2]
+        kind_name = sys.argv[2]
         top = sys.argv[4]
-        print('-nicv code -c top')
+        print('-nicv <code> -c <top>')
         if parameters == 6 and sys.argv[5] == '-kalman':
             print('I\'m in NICV for kalman!')
             print('TODO: NICV calculating on kalman transformed traces')
@@ -61,52 +61,15 @@ elif sys.argv[1] == '-nicv':
             print('TODO: NICV calculating on dwt transformed traces')
             #TODO: NICV calculating on dwt transformed traces
         else:
+
             db = Database()
+            db.connect()
+            idList = db.get_trace_idlist(kind_name)
 
-            query = "SELECT name FROM trace WHERE kind = '"+code+"'"
-            db.cur.execute(query)
-            fileList = []
-
-            while 1:
-                one = db.cur.fetchone()
-                if one:
-                    fileList.append(one[0])
-                else:
-                    # End of DataBase reached
-                    break
-
-            one = db.cur.fetchone()
-            msg, crypt, raw_data = one
-
-            for i in range (len(fileList)):
-
-                query = "SELECT message, cipher, data FROM trace WHERE name = '"+fileList[i]+"'"
-                db.cur.execute(query)
-                one = db.cur.fetchone()
-                msg, crypt, raw_data = one
-
-                t = Trace_tmp(i.original_path)
-                t.setMean()
-                t.setVariance()
-                meanList.append(t.getMean())
-                traceList.append(i)
-
-            t.draw(t.getTrace())
-
-            mVariance = statistics.variance(meanList)
-
-            for i in range(len(traceList)):
-
-                traceList[i].setNicv(mVariance / traceList[i].getVariance())
-                q = Trace.select().where(Trace.original_path == traceList[i].getPathToTrace()).get()
-                q.nicv = traceList[i].getNicv()
-                q.last_top = sys.argv[4]
-                q.save() #Will do the SQL update query.
-
-            print('I\'m in classic NICV!')
-            print('TODO: NICV TOP + optimization + testing')
-            #TODO: TODO: NICV TOP + optimization + testing'
-
+            kind = Kind()
+            print 'Calculating NICV for ', kind_name, ' ...'
+            kind.nicv(db, idList)
+"""
     elif sys.argv[3] == '-s':
         code_id = Code.get(Code.symbol == sys.argv[2]).id
         print 'here'
@@ -175,7 +138,7 @@ elif sys.argv[1] == '-fft':
         #TODO: testing of fft transformation.
 
 # MAIN -->
-
+"""
 """
 pairsList = []
 meanList = []
