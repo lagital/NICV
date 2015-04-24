@@ -54,18 +54,20 @@ class Kind(object):
     def getMean(self):
         return self.mean
 
-    def nicv(self, db, idList):
+    def nicv(self, db, idList, top):
 
         start_time = time.time()
 
-        listLen = len(idList)
-        nicvList = [(0, 0)]
+        idListLen = len(idList)
         errList = []
+        print idListLen
+        print '...'
 
-        for i in range (listLen):
+        meanList = []
+        varList = []
 
-            meanList = []
-            varList = []
+
+        for i in range (idListLen):
 
             query = "SELECT data FROM trace WHERE id = "+str(idList[i])+";"
             db.cur.execute(query)
@@ -79,30 +81,53 @@ class Kind(object):
                 meanList.append(mean)
                 varList.append(var)
 
-                if i%10000 == 0:
-                    print 'Traces processed: ', i, ' / ', listLen
+                if i%5000 == 0:
+                    print 'Traces processed: ', i, ' / ', idListLen
             except:
                 errList.append(idList[i])
                 print 'Error. Trace ID: ', idList[i]
                 continue
 
         print 'All traces for the current kind are processed.'
-        print 
+        print 'Errors percent: ', len(errList) / idListLen * 100, '%'
 
         mVar = numpy.array(meanList).var()
 
-        for j in range(len(idList)):
+        for j in range(idListLen):
+            if idList[j] in errList:
+                idList.remove(idList[j])
+                idListLen = idListLen - 1
+        idListLen = len(idList)
 
-            nicv = mVar / varList[j]
-            nicvList[j] = idList[j], nicv
+        nicvList = []
 
-            query = "INSERT INTO trace (nicv) VALUES (%s) WHERE id = "+str(idList[j])+";"
-            content = (nicv)
-            db.cur.execute(query, content)
+        for j in range(idListLen):
+
+                nicv = mVar / varList[j]
+                nicvList.append((idList[j], nicv))
+
+                query = "UPDATE trace SET nicv = %s WHERE id = "+str(idList[j])+";"
+                #content = ()
+                db.cur.execute(query % nicv)
 
         db.conn.commit()
 
-        print('NICV is calculated for the current kind.')
+        print('NICV is calculated for the current kind...')
+
+        sorted(nicvList, key=lambda nicv: nicv[1])
+
+        nicvListLen = len(nicvList)
+
+        for j in range(int(top)):
+
+            (id, nicv) = nicvList[nicvListLen - j - 1]
+            query = "UPDATE trace SET is_top = '%s' WHERE id = "+str(id)+";"
+            content = ('yes')
+            db.cur.execute(query % content)
+
+        db.conn.commit()
+
+        print('NICV top is calculated for the current kind...')
         print 'Execution time: ', time.time() - start_time
 
     def getText(self):

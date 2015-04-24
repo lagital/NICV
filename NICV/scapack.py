@@ -68,7 +68,7 @@ elif sys.argv[1] == '-nicv':
 
             kind = Kind()
             print 'Calculating NICV for ', kind_name, ' ...'
-            kind.nicv(db, idList)
+            kind.nicv(db, idList, top)
 """
     elif sys.argv[3] == '-s':
         code_id = Code.get(Code.symbol == sys.argv[2]).id
