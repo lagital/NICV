@@ -1,5 +1,6 @@
 import statistics
 import numpy
+import sys
 from numpy import array
 import scipy
 from numpy import array
@@ -91,7 +92,7 @@ class Kind(object):
         print 'All traces for the current kind are processed.'
         print 'Errors percent: ', len(errList) / idListLen * 100, '%'
 
-        mVar = numpy.array(meanList).var()
+        mVar = numpy.var(numpy.array(meanList))
 
         for j in range(idListLen):
             try:
@@ -103,16 +104,21 @@ class Kind(object):
         idListLen = len(idList)
 
         nicvList = []
+        k = 0
 
         for j in range(idListLen):
 
                 nicv = mVar / varList[j]
                 nicvList.append((idList[j], nicv))
 
-                query = "UPDATE trace SET nicv = %s WHERE id = "+str(idList[j])+";"
-                #content = ()
-                db.cur.execute(query % nicv)
-
+                try:
+                    query = "UPDATE trace SET nicv = %s WHERE id = "+str(idList[j])+";"
+                    #content = ()
+                    db.cur.execute(query % nicv)
+                except:
+                    k = k + 1
+                    continue
+        print k
         db.conn.commit()
 
         print('NICV is calculated for the current kind...')
