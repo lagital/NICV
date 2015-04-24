@@ -94,9 +94,12 @@ class Kind(object):
         mVar = numpy.array(meanList).var()
 
         for j in range(idListLen):
-            if idList[j] in errList:
-                idList.remove(idList[j])
-                idListLen = idListLen - 1
+            try:
+                if idList[j] in errList:
+                    idList.remove(idList[j])
+            except:
+                continue
+
         idListLen = len(idList)
 
         nicvList = []

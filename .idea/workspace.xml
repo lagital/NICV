@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c04cbcda-7bd6-48be-920c-350ef7a4c989" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/tmp_file.tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/wave_aist-aes-agilent_2009-12-30_22-53-20_n=3_k=0000000000000003243f6a8885a308d3_m=f4bf8d8d8c31d763da06c80abb1185eb_c=ec5416af58df2a6b21ec03ac6d91748a.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/wave_aist-aes-agilent_2009-12-30_22-53-29_n=31_k=0000000000000003243f6a8885a308d3_m=1a2801f9783764082ff592d9140db1e9_c=1cfb4722a2d9137d88edcb915a51432b.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/wave_aist-aes-agilent_2009-12-30_22-53-39_n=61_k=0000000000000003243f6a8885a308d3_m=9aeff794c19dfc365f447527dea110f4_c=05fdf6bfe97bcb41d858617fe2e99243.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/wave_aist-aes-agilent_2009-12-30_22-53-40_n=64_k=0000000000000003243f6a8885a308d3_m=d381cd6ac35a1d24bf89b75019605aee_c=e0aeda1869d29ece325e33ca1a0cf569.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/wave_aist-aes-agilent_2009-12-30_22-54-00_n=126_k=0000000000000003243f6a8885a308d3_m=01df2b5aaff99e0f073ebf631da29e5b_c=c187b634bca73654a809243dffa35857.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/wave_aist-aes-agilent_2009-12-30_22-54-10_n=157_k=0000000000000003243f6a8885a308d3_m=4e9cb2831ee1e3c9638b8dffb37a0fd2_c=d61d78dd350d30dd05ac635f60505174.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/wave_aist-aes-agilent_2009-12-30_22-54-38_n=245_k=0000000000000003243f6a8885a308d3_m=db8f63bbf2d803e388828a482539e1cc_c=a01700d9e83125ba937c5354d8ac99ee.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/migration/traces/wave_aist-aes-agilent_2009-12-30_22-55-16_n=359_k=0000000000000003243f6a8885a308d3_m=bb6a2f126deae0f6609b97dc4fb08151_c=586f2f6a6a12e8d967df7aea78c810fe.csv" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/NICV/TextTracePair.py" afterPath="$PROJECT_DIR$/NICV/TextTracePair.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/NICV/scapack.py" afterPath="$PROJECT_DIR$/NICV/scapack.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="diploma.iws" />
@@ -64,8 +54,8 @@
       <file leaf-file-name="TextTracePair.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/NICV/TextTracePair.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.39130434" vertical-offset="1575" max-vertical-offset="2772">
-              <caret line="101" column="21" selection-start-line="101" selection-start-column="21" selection-end-line="101" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.2788906" vertical-offset="1799" max-vertical-offset="2826">
+              <caret line="110" column="0" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -163,7 +153,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -226,6 +215,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -474,13 +464,13 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20710059" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21153846" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -829,7 +819,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="222" max-vertical-offset="936">
           <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -877,8 +866,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/NICV/TextTracePair.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39130434" vertical-offset="1575" max-vertical-offset="2772">
-          <caret line="101" column="21" selection-start-line="101" selection-start-column="21" selection-end-line="101" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.2788906" vertical-offset="1799" max-vertical-offset="2826">
+          <caret line="110" column="0" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
