@@ -1,8 +1,10 @@
 import statistics
 import numpy
+from operator import itemgetter
 import sys
 from numpy import array
 import scipy
+import math
 from numpy import array
 from scipy.io.wavfile import read
 import matplotlib.pyplot as plt
@@ -19,6 +21,10 @@ class Kind(object):
         self.pathToText = ''
         self.fft = 0
         self.dwt = 0
+
+    @staticmethod
+    def getFromTuple(item):
+        return item[0]
 
     def setFft(self):
         self.fft = scipy.fft(self.trace)
@@ -61,12 +67,10 @@ class Kind(object):
 
         idListLen = len(idList)
         errList = []
-        print idListLen
-        print '...'
-
         meanList = []
         varList = []
 
+        top = int(top)
 
         for i in range (idListLen):
 
@@ -76,66 +80,68 @@ class Kind(object):
 
             try:
                 parse_data = parse_binary(raw_data)
-
-                mean = numpy.array(parse_data).mean()
-                var = numpy.array(parse_data).var()
-                meanList.append(mean)
-                varList.append(var)
-
-                if i%5000 == 0:
-                    print 'Traces processed: ', i, ' / ', idListLen
             except:
                 errList.append(idList[i])
                 print 'Error. Trace ID: ', idList[i]
-                continue
+
+            mean = numpy.mean(numpy.array(parse_data))
+            var = numpy.var(numpy.array(parse_data))
+
+            if math.isnan(var) or math.isnan(mean):
+                errList.append(idList[i])
+                print 'Error. Trace ID: ', idList[i]
+            else:
+                meanList.append(mean)
+                varList.append(var)
+                if i%5000 == 0:
+                    print 'Traces processed: ', i, ' / ', idListLen
+
 
         print 'All traces for the current kind are processed.'
         print 'Errors percent: ', len(errList) / idListLen * 100, '%'
 
-        mVar = numpy.var(numpy.array(meanList))
+        mMean = numpy.array(meanList)
+        mVar = numpy.nanvar(mMean)
 
-        for j in range(idListLen):
-            try:
-                if idList[j] in errList:
-                    idList.remove(idList[j])
-            except:
-                continue
+        for j in range(len(errList)):
+            idList.remove(errList[j])
 
         idListLen = len(idList)
 
         nicvList = []
-        k = 0
 
         for j in range(idListLen):
 
                 nicv = mVar / varList[j]
-                nicvList.append((idList[j], nicv))
+                nicvList.append((nicv, idList[j]))
 
-                try:
-                    query = "UPDATE trace SET nicv = %s WHERE id = "+str(idList[j])+";"
-                    #content = ()
-                    db.cur.execute(query % nicv)
-                except:
-                    k = k + 1
-                    continue
-        print k
+                query = "UPDATE trace SET nicv = %s WHERE id = "+str(idList[j])+";"
+                #content = ()
+                db.cur.execute(query % nicv)
+
         db.conn.commit()
-
         print('NICV is calculated for the current kind...')
 
-        sorted(nicvList, key=lambda nicv: nicv[1])
+        nicvList.sort(key=itemgetter(0))
 
         nicvListLen = len(nicvList)
 
-        for j in range(int(top)):
+        for j in range(idListLen):
 
-            (id, nicv) = nicvList[nicvListLen - j - 1]
-            query = "UPDATE trace SET is_top = '%s' WHERE id = "+str(id)+";"
-            content = ('yes')
-            db.cur.execute(query % content)
+            if top - 1 - j >= 0:
+                (nicv, id) = nicvList[nicvListLen - j - 1]
+                query = "UPDATE trace SET is_top = '%s' WHERE id = "+str(id)+";"
+                content = ('yes')
+                db.cur.execute(query % content)
+                #print str(nicv), content
+            else:
+                (nicv, id) = nicvList[nicvListLen - j - 1]
+                query = "UPDATE trace SET is_top = '%s' WHERE id = "+str(id)+";"
+                content = ('no')
+                db.cur.execute(query % content)
+                #print str(nicv), content
 
         db.conn.commit()
-
         print('NICV top is calculated for the current kind...')
         print 'Execution time: ', time.time() - start_time
 
