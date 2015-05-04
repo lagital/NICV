@@ -80,39 +80,40 @@ def main():
 			if not msg: # At the end of the database
 				print "WARNING: All files used, key undisclosed !!"
 				sys.exit(1)
-			wave= dsp( trace )
-			brk.process(msg, wave)
-			iteration+= 1
-			text= str(iteration).rjust(4) + " "
-			# When enough iterations, trying to guess subkeys
-			if iteration >= ITERATION_THRESHOLD:
-				# Computing new subkeys and stability mark
-				loc_subkeys= brk.get_subkeys()
-				if loc_subkeys == subkeys:
-					stability+= 1
-				else:
-					subkeys= loc_subkeys
-					stability= 0
-				# Gathering some informations
-				text+= str(stability).rjust(3)
-				for sbox in range(8):
-					if sbox in SB_LST:
-						text+= " " + str( subkeys[ SB_LST.index(sbox) ] ).rjust(2)
+			if msg != 'err':
+				wave= dsp( trace )
+				brk.process(msg, wave)
+				iteration+= 1
+				text= str(iteration).rjust(4) + " "
+				# When enough iterations, trying to guess subkeys
+				if iteration >= ITERATION_THRESHOLD:
+					# Computing new subkeys and stability mark
+					loc_subkeys= brk.get_subkeys()
+					if loc_subkeys == subkeys:
+						stability+= 1
 					else:
-						text+= " ".rjust(2) 
+						subkeys= loc_subkeys
+						stability= 0
+					# Gathering some informations
+					text+= str(stability).rjust(3)
+					for sbox in range(8):
+						if sbox in SB_LST:
+							text+= " " + str( subkeys[ SB_LST.index(sbox) ] ).rjust(2)
+						else:
+							text+= " ".rjust(2)
 
-				# If subkeys have been stable for long enough, try to guess the full key
-				if stability >= STABILITY_THRESHOLD:
-					if len( SB_LST ) == 8: # Attack on all SBox
-						fullkey= brk.get_key(msg, crypt)
-					else:
-						fullkey="All attacked subkeys disclosed" 
-						for sbox in SB_LST:
-							if subkeys[sbox] != SK_R1[sbox]:
-								fullkey=None
+					# If subkeys have been stable for long enough, try to guess the full key
+					if stability >= STABILITY_THRESHOLD:
+						if len( SB_LST ) == 8: # Attack on all SBox
+							fullkey= brk.get_key(msg, crypt)
+						else:
+							fullkey="All attacked subkeys disclosed"
+							for sbox in SB_LST:
+								if subkeys[sbox] != SK_R1[sbox]:
+									fullkey=None
 
-			# Flushing output
-			out( text )
+				# Flushing output
+				out( text )
 
 		# End of Attack
 		out( "# Key: " + str(fullkey) + "\n" )

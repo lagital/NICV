@@ -64,6 +64,7 @@ class Kind(object):
     def nicv(self, db, idList, top):
 
         start_time = time.time()
+        iter_time = time.time()
 
         idListLen = len(idList)
         errList = []
@@ -73,6 +74,7 @@ class Kind(object):
         top = int(top)
 
         for i in range (idListLen):
+            err = 0
 
             query = "SELECT data FROM trace WHERE id = "+str(idList[i])+";"
             db.cur.execute(query)
@@ -81,21 +83,25 @@ class Kind(object):
             try:
                 parse_data = parse_binary(raw_data)
             except:
+                err = 1
                 errList.append(idList[i])
                 print 'Error. Trace ID: ', idList[i]
 
-            mean = numpy.mean(numpy.array(parse_data))
-            var = numpy.var(numpy.array(parse_data))
+            if err == 0:
+                mean = numpy.mean(numpy.array(parse_data))
+                var = numpy.var(numpy.array(parse_data))
 
-            if math.isnan(var) or math.isnan(mean):
-                errList.append(idList[i])
-                print 'Error. Trace ID: ', idList[i]
-            else:
                 meanList.append(mean)
-                varList.append(var)
-                if i%5000 == 0:
-                    print 'Traces processed: ', i, ' / ', idListLen
 
+                if math.isnan(var):
+                    errList.append(idList[i])
+                    print 'Error. Trace ID: ', idList[i]
+                else:
+                    varList.append(var)
+                    if i%5000 == 0:
+                        print 'Traces processed: ', i, ' / ', idListLen
+                        print 'Execution time: ', time.time() - iter_time
+                        iter_time = time.time()
 
         print 'All traces for the current kind are processed.'
         print 'Errors percent: ', len(errList) / idListLen * 100, '%'

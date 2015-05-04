@@ -76,7 +76,7 @@ class traces_database:
 		# Building list of content
 		try:
 			print "Building files list, please wait..."
-			cmd= "SELECT name FROM "+self.__table+" WHERE kind = 'des_first'"
+			cmd= "SELECT name FROM "+self.__table+" WHERE kind = 'des_first' and is_top = 'no'"
 			# <DEBUG>
 			#cmd= "SELECT filename FROM "+self.__table+" LIMIT 1000"
 			# <\DEBUG>
@@ -125,9 +125,10 @@ class traces_database:
 			#if db_name=='pgdb':
 		 		#raw_data= db.unescape_bytea( raw_data )
 			return msg, crypt, parse_binary( str(raw_data) )
-		except db.DatabaseError, e:
-			print e
-			sys.exit(1)
+		#except db.DatabaseError, e:
+		except:
+			#print e
+			return 'err', 'err', 'err'
 
 	def get_file(self, filename):
 		"""
