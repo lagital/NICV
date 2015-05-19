@@ -39,7 +39,7 @@ for i in range(lenDir):
     cipher = re.search('(?<=c=)(.*)(?=\.)', fileName).group(0)
 
     query = "INSERT INTO trace (name, data, key, message, cipher, kind) VALUES (%s, %s, %s, %s, %s, %s);"
-    content = (fileName, bytearray(bytes), key, message, cipher, 'des_first')
+    content = (fileName, bytearray(bytes), key, message, cipher, 'des_second')
     cursor.execute(query, content)
 
     print 'File number: ', i, '/', lenDir

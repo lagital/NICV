@@ -118,7 +118,8 @@ class Kind(object):
 
         for j in range(idListLen):
 
-                nicv = mVar / varList[j]
+                nicv = math.sqrt(mVar / varList[j])
+                print nicv
                 nicvList.append((nicv, idList[j]))
 
                 query = "UPDATE trace SET nicv = %s WHERE id = "+str(idList[j])+";"

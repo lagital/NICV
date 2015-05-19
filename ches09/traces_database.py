@@ -76,7 +76,8 @@ class traces_database:
 		# Building list of content
 		try:
 			print "Building files list, please wait..."
-			cmd= "SELECT name FROM "+self.__table+" WHERE kind = 'des_first' and is_top = 'no'"
+			#cmd= "SELECT name FROM "+self.__table+" WHERE kind = 'des_first' and is_top = 'no'"
+			cmd= "SELECT name FROM "+self.__table+" WHERE kind = 'des_second' and is_top = 'no'"
 			# <DEBUG>
 			#cmd= "SELECT filename FROM "+self.__table+" LIMIT 1000"
 			# <\DEBUG>
