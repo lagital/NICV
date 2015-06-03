@@ -63,7 +63,6 @@ class key_estimator:
 		r0= ip.subblock(32,64)
 		e0= r0.e().subblock(self.__sbox*6, (self.__sbox+1)*6)
 		s0= l0.xor(r0).p(-1).subblock(self.__sbox*4, (self.__sbox+1)*4)
-
 		hd= e0.xor(self.__key).s(self.__sbox).xor(s0) # Full hamming distance vector
 		return float( weight(hd) )
 
@@ -108,6 +107,7 @@ class key_estimator:
 				self.__diff= [0]*len( varw )
 			else:
 				self.__diff= map( lambda cov, var: cov/sqrt( var )/sqrt( varh ), covhw, varw )
+			print 'differential:', self.__diff
 			return self.__diff
 	
 	def get_mark(self):

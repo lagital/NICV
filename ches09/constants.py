@@ -20,6 +20,10 @@
 # Traces access 
 #DB_or_FS  = True  # From the DataBase
 DB_or_FS  = True # From the filesystem (False)
+IP = '127.0.0.1'
+DB = 'scapack'
+USER = 'postgres'
+PASSWORD = 'postgres'
 
 # Traces on which we'll lead our DPA
 TABLE     = "trace" # For traces from the DataBase
@@ -39,17 +43,16 @@ BEGIN_N, END_N = None, None # All files
 # ---------------------
 
 # Trace Zoom in
-#BEGIN_T, END_T = None, None # Full trace
+BEGIN_T, END_T = None, None # Full trace
 
 #BEGIN_T, END_T = 5700, 5900 # Zoom in on power consumption of first round
-BEGIN_T, END_T = 5000, 6200
 #BEGIN_T, END_T = 5500, 6200 # Zoom in on power consumption of first round
                             # @note Entire round1 clokc cycle is in [5500:6200]
 
 # DSP
 #DSP="none"
-#DSP="kurtosis"
-DSP="RMS"
+DSP="kurtosis"
+#DSP="RMS"
 
 # --------------------
 # Algorithm parameters
