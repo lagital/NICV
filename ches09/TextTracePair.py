@@ -156,31 +156,11 @@ class Kind(object):
         print 'Execution time: ', time.time() - start_time
 
     def nicv2(self, db, idList, top):
-        """
-        1) We define all possible values of 6 bits for s-box #1.
-        2) We divide all traces on groups according to the 6 bits value (64 classes, as you told before). Next steps (3-4) will be applied for the traces in each particular group.
-        3) For each point in one trace within a group we compute the value of E(Y in that point in each trace). For example:
-
-        group with 6 bits 010011:
-        trace 1: 1.5 1.3 0.2 0.4 ...
-        trace 2: 0.1 0.1 1.6 0.6 ...
-
-        we will have the results: 0.8 0.7 0.9 0.5 ...
-
-        4) We compute Var(results of step 3).
-        5) We compute N points of the final NICV function: (Var computed on step 4)/Var(Y).
-
-        Then we repeat those steps for the next s-boxes so new peaks may be added in 64 existing arrays (if a new value is greater than the old, we replace it).
-        """
-        start_time = time.time()
-        iter_time = time.time()
 
         idListLen = len(idList)
         errList = []
         meanList = []
         varList = []
-
-        top = int(top)
 
         cmd = "SELECT message, cipher, data FROM trace WHERE id = '" + str(idList[0]) + "'"
         db.cur.execute(cmd)
@@ -189,78 +169,55 @@ class Kind(object):
 
         parse_data = parse_binary(str(traw_data))
         points = len(parse_data)
-        lenTmsg = len(tmsg)/2
-        traceList = []
-        globVarList = []
-        classList = [[] for i in range(lenTmsg)]
-        tclassList = []
-        nicvList = [[-1]*points for i in range(256)]
-        #print 'Log0.1:', len(nicvList[0])
-        #print 'Log0.2:', nicvList[0][0]
+        print "Points in trace:", points
 
-        for i in range (idListLen):
-            err = 0
+        print "Calculating ..."
 
-            cmd = "SELECT message, cipher, data FROM trace WHERE id = '" + str(idList[i]) + "'"
-            db.cur.execute(cmd)
-            one = db.cur.fetchone()
-            msg, crypt, raw_data = one
+        classList = [[0.0] * points]*256
+        tclassList = [0.0] * points
+        tMeanList = [0.0] * points
+        tPowerMeanList = [0.0] * points
+        parallels = 100
+        tGlobalVarlist = [[]]*parallels
+        #globalVarlist = [0.0] * points
+        globalVarlist = []
+        byteList = []
 
-            try:
-                parse_data = parse_binary(str(raw_data))
-            except:
-                err = 1
-                errList.append(idList[i])
-                print 'Error. Trace ID: ', idList[i]
+        collected = 0
+        #for i in range(points):
+        for i in range(points//parallels):
+            start_time = time.time()
+            for j in range (idListLen):
+                err = 0
 
-            if err == 0:
-                if i%5000 == 0:
-                    print 'Traces processed: ', i
-                ttrace = (msg.strip(), parse_data)
-                traceList.append(ttrace)
+                cmd = "SELECT message, data FROM trace WHERE id = '" + str(idList[j]) + "'"
+                db.cur.execute(cmd)
+                one = db.cur.fetchone()
+                msg, raw_data = one
 
-        tglobVar = []
-        traceListLen = len(traceList)
-        globDataList = [x[1] for x in traceList]
-        print len(globDataList[0])
+                try:
+                    parse_data = parse_binary(str(raw_data))
+                except:
+                    err = 1
+                    #errList.append(idList[j])
+                    #print 'Error. Trace ID: ', idList[j]
 
-        for k in range(points):
-            for i in range(traceListLen):
-                #tglobVar = numpy.var(numpy.array(globDataList[k][0:traceListLen]))
-                tglobVar.append(globDataList[i][k])
-            globVarList.append(numpy.var(numpy.array(tglobVar)))
-            #print 'Log lenglobVar:', len(globVarList)
+                if err == 0:
+                    for k in range(parallels):
+                        tGlobalVarlist[k].append(parse_data[i*parallels+k])
+                    print j
+                    #if collected == 0:
+                    #   byteList.append((int(msg[0:2], 16), idList[j]))
+            print time.time() - start_time
+            collected = 1
 
-        #TEST WARNING: for j in range(lenTmsg):
-        for j in range(1):
-            tVar = 0
-            for i in range (256):
-                for m in range(traceListLen):
-                    tmsg, parse_data = traceList[m]
-                    #TEST WARNING:
-                    #if int(tmsg[j*2:j*2+2], 16) == i:
-                    #    tclassList.append(parse_data)
-                    tclassList.append(parse_data)
-                tclassListLen = len(tclassList)
+            for m in range(parallels):
+                globalVarlist.append(numpy.var(numpy.array(tGlobalVarlist[m])))
 
-                while tVar == 0 or str(tVar) == 'nan':
-                    tMeanList = []
-                    tMean = []
-                    for k in range(points):
-                        for l in range(tclassListLen):
-                            tMean.append(tclassList[l][k])
-                        tMeanList.append(numpy.mean(numpy.array(tMean)))
-                    tVar = numpy.var(numpy.array(tMeanList))
-                for k in range(points):
-                    t = tVar/globVarList[k]
-                    if nicvList[i][k] < t:
-                        nicvList[i][k] = t
-            print 'Log nicvlist :', len(nicvList[0])
-            print 'End log nicvlist'
-            plt.plot(nicvList[i-1])
-            plt.ylabel('nicv')
-            plt.show()
-            return 0
+            tGlobalVarlist = [[]]*parallels
+            if i%parallels == 0:
+                print "Var(Y) was processed for", i*parallels + parallels, "points"
+        return 0
 
     def getText(self):
         return self.text

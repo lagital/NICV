@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c04cbcda-7bd6-48be-920c-350ef7a4c989" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ches09/nicv.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ches09/rand.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/NICV/Database.py" afterPath="$PROJECT_DIR$/ches09/Database.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/NICV/TextTracePair.py" afterPath="$PROJECT_DIR$/ches09/TextTracePair.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/NICV/Trace.py" afterPath="$PROJECT_DIR$/ches09/Trace.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/NICV/scapack.py" afterPath="$PROJECT_DIR$/ches09/scapack.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/NICV/test_mig2.py" afterPath="$PROJECT_DIR$/ches09/test_mig2.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ches09/constants.py" afterPath="$PROJECT_DIR$/ches09/constants.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ches09/key_estimator_cpa.py" afterPath="$PROJECT_DIR$/ches09/key_estimator_cpa.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ches09/cpa_RMS_randomized/output_#0.txt" afterPath="$PROJECT_DIR$/ches09/cpa_RMS_randomized/output_#0.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ches09/TextTracePair.py" afterPath="$PROJECT_DIR$/ches09/TextTracePair.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ches09/rand.py" afterPath="$PROJECT_DIR$/ches09/rand.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="diploma.iws" />
@@ -36,22 +28,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="dsp.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ches09/dsp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="1080">
-              <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TextTracePair.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TextTracePair.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ches09/TextTracePair.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3528">
-              <caret line="0" column="31" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.7169811" vertical-offset="1812" max-vertical-offset="2754">
+              <caret line="216" column="43" selection-start-line="216" selection-start-column="43" selection-end-line="216" selection-end-column="43" />
               <folding>
+                <element signature="e#0#31#0" expanded="true" />
                 <element signature="e#850#865#0" expanded="false" />
                 <element signature="e#1429#4237#0" expanded="false" />
               </folding>
@@ -59,64 +42,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rand.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="rand.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ches09/rand.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22187981" vertical-offset="0" max-vertical-offset="649">
-              <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="647" max-vertical-offset="1368">
+              <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Database.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ches09/Database.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="71" max-vertical-offset="792">
-              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="traces_database.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ches09/traces_database.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1858" max-vertical-offset="2970">
-              <caret line="127" column="60" selection-start-line="121" selection-start-column="12" selection-end-line="127" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="key_estimator_cpa.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ches09/key_estimator_cpa.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1062" max-vertical-offset="2538">
-              <caret line="60" column="33" selection-start-line="60" selection-start-column="33" selection-end-line="60" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="key_estimator_dpa.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ches09/key_estimator_dpa.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1619" max-vertical-offset="2340">
-              <caret line="101" column="11" selection-start-line="101" selection-start-column="11" selection-end-line="101" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="nicv.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ches09/nicv.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="216">
-              <caret line="6" column="66" selection-start-line="6" selection-start-column="66" selection-end-line="6" selection-end-column="66" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -160,16 +93,16 @@
         <option value="$PROJECT_DIR$/ches09/constants.py" />
         <option value="$PROJECT_DIR$/ches09/key_estimator_cpa.py" />
         <option value="$PROJECT_DIR$/ches09/nicv.py" />
-        <option value="$PROJECT_DIR$/ches09/TextTracePair.py" />
         <option value="$PROJECT_DIR$/ches09/rand.py" />
+        <option value="$PROJECT_DIR$/ches09/TextTracePair.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="65" />
-    <option name="y" value="-4" />
+    <option name="y" value="24" />
     <option name="width" value="1301" />
-    <option name="height" value="772" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -562,7 +495,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1301" height="772" extended-state="6" />
+    <frame x="65" y="24" width="1301" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13461539" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -883,27 +816,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ches09/Database.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="71" max-vertical-offset="792">
-          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ches09/kurtosis.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1488" max-vertical-offset="2394">
           <caret line="116" column="17" selection-start-line="116" selection-start-column="17" selection-end-line="116" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ches09/dsp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="1080">
-          <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -932,7 +848,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1062" max-vertical-offset="2538">
           <caret line="60" column="33" selection-start-line="60" selection-start-column="33" selection-end-line="60" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -940,7 +855,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1619" max-vertical-offset="2340">
           <caret line="101" column="11" selection-start-line="101" selection-start-column="11" selection-end-line="101" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -961,29 +875,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ches09/nicv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="216">
+        <state vertical-scroll-proportion="0.16640987" vertical-offset="0" max-vertical-offset="649">
           <caret line="6" column="66" selection-start-line="6" selection-start-column="66" selection-end-line="6" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ches09/Database.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="71" max-vertical-offset="792">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ches09/TextTracePair.py">
+    <entry file="file://$PROJECT_DIR$/ches09/dsp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3528">
-          <caret line="0" column="31" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="31" />
-          <folding>
-            <element signature="e#850#865#0" expanded="false" />
-            <element signature="e#1429#4237#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="1080">
+          <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ches09/rand.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22187981" vertical-offset="0" max-vertical-offset="649">
-          <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="647" max-vertical-offset="1368">
+          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ches09/TextTracePair.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7169811" vertical-offset="1812" max-vertical-offset="2754">
+          <caret line="216" column="43" selection-start-line="216" selection-start-column="43" selection-end-line="216" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#850#865#0" expanded="false" />
+            <element signature="e#1429#4237#0" expanded="false" />
           </folding>
         </state>
       </provider>
