@@ -39,6 +39,7 @@ class Kind(object):
         cA, cD = pywt.dwt(self.trace, 'haar')
         self.dwt = cA
 
+
     def getDwt(self):
         return self.dwt
 
@@ -173,20 +174,27 @@ class Kind(object):
 
         print "Calculating ..."
 
-        classList = [[0.0] * points]*256
+        #classList = [[0.0] * points]*256
         tclassList = [0.0] * points
         tMeanList = [0.0] * points
         tPowerMeanList = [0.0] * points
-        parallels = 500
+        parallels = 16
         tGlobalVarlist = [[]]*parallels
+        classList = [[]]*256
         #globalVarlist = [0.0] * points
         globalVarlist = []
         byteList = []
 
         collected = 0
+        classCalcCount = 0
+        classCountNotIncluded = 0
+        tracesInClass = 0
+
         #for i in range(points):
         for i in range(points//parallels):
+
             start_time = time.time()
+
             for j in range (idListLen):
                 err = 0
 
@@ -199,24 +207,61 @@ class Kind(object):
                     parse_data = parse_binary(str(raw_data))
                 except:
                     err = 1
-                    #errList.append(idList[j])
+                    errList.append(idList[j])
                     #print 'Error. Trace ID: ', idList[j]
 
                 if err == 0:
                     for k in range(parallels):
                         tGlobalVarlist[k].append(parse_data[i*parallels+k])
-                    print j
+
+                    if classCalcCount < 256:
+                        if int(msg[0:2], 16) == classCalcCount:
+                            for d in range(points):
+                                tMeanList[d] = tMeanList[d] + parse_data[d]
+                                tPowerMeanList[d] = tPowerMeanList[d] + parse_data[d]**2
+                                tracesInClass = tracesInClass + 1
+
+                if j%20000 == 0:
+                    print j, "traces was processed."
                     #if collected == 0:
                     #   byteList.append((int(msg[0:2], 16), idList[j]))
-            print time.time() - start_time
-            collected = 1
+            #collected = 1
 
             for m in range(parallels):
                 globalVarlist.append(numpy.var(numpy.array(tGlobalVarlist[m])))
 
+            if tracesInClass > 0:
+                for m in range(points):
+                    #tMeanList[m] = tMeanList[m]/tracesInClass
+                    tPowerMeanList[m] = tPowerMeanList[m]/tracesInClass - (tMeanList[m]/tracesInClass)**2
+                print "Var[E(Y|X)] for class", classCalcCount, "was calculated"
+                classList.append(tPowerMeanList)
+            else:
+                classCountNotIncluded = classCountNotIncluded + 1
+                print "Class was empty!"
+
+            classCalcCount = classCalcCount + 1
+            tracesInClass = 0
+
             tGlobalVarlist = [[]]*parallels
+            tMeanList = [0.0] * points
+            tPowerMeanList = [0.0] * points
+
             if i%parallels == 0:
                 print "Var(Y) was processed for", i*parallels + parallels, "points"
+
+        lenn = len(idList) - (len(errList)/(points//parallels))
+
+        for i in range(256 - classCountNotIncluded):
+            for j in range(points):
+                if i != 0:
+                    classList[0][j] = classList[0][j] + classList[i][j]
+        print "Total Var[E(Y|X)] for all classes was calculated!"
+
+        for i in range(lenn):
+            globalVarlist[i] = classList[0][i]/(globalVarlist[i]/lenn)
+        print "NICV function was calculated!"
+
         print len(globalVarlist)
         return 0
 
