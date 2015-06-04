@@ -177,7 +177,7 @@ class Kind(object):
         tclassList = [0.0] * points
         tMeanList = [0.0] * points
         tPowerMeanList = [0.0] * points
-        parallels = 100
+        parallels = 500
         tGlobalVarlist = [[]]*parallels
         #globalVarlist = [0.0] * points
         globalVarlist = []
@@ -217,6 +217,7 @@ class Kind(object):
             tGlobalVarlist = [[]]*parallels
             if i%parallels == 0:
                 print "Var(Y) was processed for", i*parallels + parallels, "points"
+        print len(globalVarlist)
         return 0
 
     def getText(self):

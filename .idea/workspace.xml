@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c04cbcda-7bd6-48be-920c-350ef7a4c989" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ches09/TextTracePair.py" afterPath="$PROJECT_DIR$/ches09/TextTracePair.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ches09/rand.py" afterPath="$PROJECT_DIR$/ches09/rand.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="diploma.iws" />
@@ -31,8 +30,8 @@
       <file leaf-file-name="TextTracePair.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ches09/TextTracePair.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7169811" vertical-offset="1812" max-vertical-offset="2754">
-              <caret line="216" column="43" selection-start-line="216" selection-start-column="43" selection-end-line="216" selection-end-column="43" />
+            <state vertical-scroll-proportion="0.88751924" vertical-offset="1080" max-vertical-offset="2772">
+              <caret line="182" column="26" selection-start-line="182" selection-start-column="26" selection-end-line="182" selection-end-column="26" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
                 <element signature="e#850#865#0" expanded="false" />
@@ -127,6 +126,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -261,7 +261,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -884,7 +883,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="71" max-vertical-offset="792">
           <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -907,8 +905,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ches09/TextTracePair.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7169811" vertical-offset="1812" max-vertical-offset="2754">
-          <caret line="216" column="43" selection-start-line="216" selection-start-column="43" selection-end-line="216" selection-end-column="43" />
+        <state vertical-scroll-proportion="0.88751924" vertical-offset="1080" max-vertical-offset="2772">
+          <caret line="182" column="26" selection-start-line="182" selection-start-column="26" selection-end-line="182" selection-end-column="26" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
             <element signature="e#850#865#0" expanded="false" />
