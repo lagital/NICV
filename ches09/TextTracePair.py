@@ -178,12 +178,17 @@ class Kind(object):
         tclassList = [0.0] * points
         tMeanList = [0.0] * points
         tPowerMeanList = [0.0] * points
-        parallels = 16
-        tGlobalVarlist = [[]]*parallels
-        classList = [[]]*256
+        parallels = 500
+        #tGlobalVarlist = [[]]*parallels
+        tGlobalVarlist = [[] for i in range(parallels)]
+        classList = []*256
         #globalVarlist = [0.0] * points
         globalVarlist = []
         byteList = []
+
+        #classList.append([1, 2, 3])
+        #classList.append([1, 2, 3])
+        #print "Test len:", len(classList[0]), len(classList[1])
 
         collected = 0
         classCalcCount = 0
@@ -194,72 +199,114 @@ class Kind(object):
         for i in range(points//parallels):
 
             start_time = time.time()
+            if collected == 0:
+                for j in range (idListLen):
+                    err = 0
 
-            for j in range (idListLen):
-                err = 0
+                    cmd = "SELECT message, data FROM trace WHERE id = '" + str(idList[j]) + "'"
+                    db.cur.execute(cmd)
+                    one = db.cur.fetchone()
+                    msg, raw_data = one
 
-                cmd = "SELECT message, data FROM trace WHERE id = '" + str(idList[j]) + "'"
-                db.cur.execute(cmd)
-                one = db.cur.fetchone()
-                msg, raw_data = one
+                    try:
+                        parse_data = parse_binary(str(raw_data))
+                    except:
+                        err = 1
+                        errList.append(idList[j])
+                        #print 'Error. Trace ID: ', idList[j]
 
-                try:
+                    if err == 0:
+                        for k in range(parallels):
+                            tGlobalVarlist[k].append(parse_data[i*parallels+k])
+
+                        byteList.append((int(msg[0:2], 16), idList[j]))
+
+                    if j%20000 == 0:
+                        print j, "traces were processed."
+
+                for m in range(parallels):
+                    globalVarlist.append(numpy.var(numpy.array(tGlobalVarlist[m])))
+
+                print "TEST:", len(globalVarlist)
+                tGlobalVarlist = [[] for m in range(parallels)]
+
+                collected = 1
+
+            else:
+
+                for j in range (idListLen):
+                    err = 0
+
+                    cmd = "SELECT data FROM trace WHERE id = '" + str(idList[j]) + "'"
+                    db.cur.execute(cmd)
+                    #one = db.cur.fetchone()
+                    raw_data = db.cur.fetchone()
+                    #msg, raw_data = one
+
+                    try:
+                        parse_data = parse_binary(str(raw_data))
+                    except:
+                        err = 1
+                        errList.append(idList[j])
+                        #print 'Error. Trace ID: ', idList[j]
+
+                    if err == 0:
+                        for k in range(parallels):
+                            tGlobalVarlist[k].append(parse_data[i*parallels+k])
+
+                    if j%20000 == 0:
+                        print j, "traces were processed."
+
+                for m in range(parallels):
+                    globalVarlist.append(numpy.var(numpy.array(tGlobalVarlist[m])))
+
+                print "TEST:", len(globalVarlist)
+                tGlobalVarlist = [[] for m in range(parallels)]
+
+        lenn = len(byteList)
+        for i in range(256):
+            tracesInClass = 0
+            for j in range(lenn):
+                byte, id = byteList[j]
+                if byte == i:
+                    cmd = "SELECT data FROM trace WHERE id = '" + str(id) + "'"
+                    db.cur.execute(cmd)
+                    #one = db.cur.fetchone()
+                    raw_data = db.cur.fetchone()
                     parse_data = parse_binary(str(raw_data))
-                except:
-                    err = 1
-                    errList.append(idList[j])
-                    #print 'Error. Trace ID: ', idList[j]
-
-                if err == 0:
-                    for k in range(parallels):
-                        tGlobalVarlist[k].append(parse_data[i*parallels+k])
-
-                    if classCalcCount < 256:
-                        if int(msg[0:2], 16) == classCalcCount:
-                            for d in range(points):
-                                tMeanList[d] = tMeanList[d] + parse_data[d]
-                                tPowerMeanList[d] = tPowerMeanList[d] + parse_data[d]**2
-                                tracesInClass = tracesInClass + 1
-
-                if j%20000 == 0:
-                    print j, "traces was processed."
-                    #if collected == 0:
-                    #   byteList.append((int(msg[0:2], 16), idList[j]))
-            #collected = 1
-
-            for m in range(parallels):
-                globalVarlist.append(numpy.var(numpy.array(tGlobalVarlist[m])))
+                    for d in range(points):
+                        tMeanList[d] = tMeanList[d] + parse_data[d]
+                        tPowerMeanList[d] = tPowerMeanList[d] + parse_data[d]**2
+                        tracesInClass = tracesInClass + 1
 
             if tracesInClass > 0:
                 for m in range(points):
                     #tMeanList[m] = tMeanList[m]/tracesInClass
                     tPowerMeanList[m] = tPowerMeanList[m]/tracesInClass - (tMeanList[m]/tracesInClass)**2
-                print "Var[E(Y|X)] for class", classCalcCount, "was calculated"
+
+                print "Var[E(Y|X)] for class", i, "was calculated"
+                print "TEST LEN (5002): ", len(tPowerMeanList)
                 classList.append(tPowerMeanList)
+                print "TEST LEN:", len(classList[i])
             else:
                 classCountNotIncluded = classCountNotIncluded + 1
                 print "Class was empty!"
 
-            classCalcCount = classCalcCount + 1
-            tracesInClass = 0
-
-            tGlobalVarlist = [[]]*parallels
             tMeanList = [0.0] * points
             tPowerMeanList = [0.0] * points
 
-            if i%parallels == 0:
-                print "Var(Y) was processed for", i*parallels + parallels, "points"
-
-        lenn = len(idList) - (len(errList)/(points//parallels))
+        print "Classes:", 256 - classCountNotIncluded
 
         for i in range(256 - classCountNotIncluded):
             for j in range(points):
                 if i != 0:
                     classList[0][j] = classList[0][j] + classList[i][j]
+
         print "Total Var[E(Y|X)] for all classes was calculated!"
 
         for i in range(lenn):
             globalVarlist[i] = classList[0][i]/(globalVarlist[i]/lenn)
+
         print "NICV function was calculated!"
 
         print len(globalVarlist)
