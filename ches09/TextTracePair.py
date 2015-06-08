@@ -219,6 +219,7 @@ class Kind(object):
                         for k in range(parallels):
                             tGlobalVarlist[k].append(parse_data[i*parallels+k])
 
+                        parse_data = None
                         byteList.append((int(msg[0:2], 16), idList[j]))
 
                     if j%20000 == 0:
@@ -228,6 +229,8 @@ class Kind(object):
                     globalVarlist.append(numpy.var(numpy.array(tGlobalVarlist[m])))
 
                 print "TEST:", len(globalVarlist)
+
+                tGlobalVarlist = None
                 tGlobalVarlist = [[] for m in range(parallels)]
 
                 collected = 1
@@ -237,22 +240,22 @@ class Kind(object):
                 for j in range (idListLen):
                     err = 0
 
-                    cmd = "SELECT data FROM trace WHERE id = '" + str(idList[j]) + "'"
+                    cmd = "SELECT message, data FROM trace WHERE id = '" + str(idList[j]) + "'"
                     db.cur.execute(cmd)
                     #one = db.cur.fetchone()
-                    raw_data = db.cur.fetchone()
-                    #msg, raw_data = one
+                    msg, raw_data = db.cur.fetchone()
+                    msg = None
 
                     try:
                         parse_data = parse_binary(str(raw_data))
                     except:
                         err = 1
-                        errList.append(idList[j])
-                        #print 'Error. Trace ID: ', idList[j]
 
                     if err == 0:
                         for k in range(parallels):
                             tGlobalVarlist[k].append(parse_data[i*parallels+k])
+
+                        parse_data = None
 
                     if j%20000 == 0:
                         print j, "traces were processed."
@@ -261,6 +264,8 @@ class Kind(object):
                     globalVarlist.append(numpy.var(numpy.array(tGlobalVarlist[m])))
 
                 print "TEST:", len(globalVarlist)
+
+                tGlobalVarlist = None
                 tGlobalVarlist = [[] for m in range(parallels)]
 
         lenn = len(byteList)
@@ -269,15 +274,18 @@ class Kind(object):
             for j in range(lenn):
                 byte, id = byteList[j]
                 if byte == i:
-                    cmd = "SELECT data FROM trace WHERE id = '" + str(id) + "'"
+                    cmd = "SELECT message, data FROM trace WHERE id = '" + str(id) + "'"
                     db.cur.execute(cmd)
                     #one = db.cur.fetchone()
-                    raw_data = db.cur.fetchone()
+                    msg, raw_data = db.cur.fetchone()
+                    msg = None
                     parse_data = parse_binary(str(raw_data))
                     for d in range(points):
                         tMeanList[d] = tMeanList[d] + parse_data[d]
                         tPowerMeanList[d] = tPowerMeanList[d] + parse_data[d]**2
                         tracesInClass = tracesInClass + 1
+
+                    parse_data = None
 
             if tracesInClass > 0:
                 for m in range(points):
@@ -287,7 +295,6 @@ class Kind(object):
                 print "Var[E(Y|X)] for class", i, "was calculated"
                 print "TEST LEN (5002): ", len(tPowerMeanList)
                 classList.append(tPowerMeanList)
-                print "TEST LEN:", len(classList[i])
             else:
                 classCountNotIncluded = classCountNotIncluded + 1
                 print "Class was empty!"
