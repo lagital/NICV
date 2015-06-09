@@ -1,3 +1,5 @@
+from random import *
+from matplotlib import *
 import matplotlib.pyplot as plt
 import statistics
 import numpy
@@ -228,8 +230,6 @@ class Kind(object):
                 for m in range(parallels):
                     globalVarlist.append(numpy.var(numpy.array(tGlobalVarlist[m])))
 
-                print "TEST:", len(globalVarlist)
-
                 tGlobalVarlist = None
                 tGlobalVarlist = [[] for m in range(parallels)]
 
@@ -291,9 +291,7 @@ class Kind(object):
                 for m in range(points):
                     #tMeanList[m] = tMeanList[m]/tracesInClass
                     tPowerMeanList[m] = tPowerMeanList[m]/tracesInClass - (tMeanList[m]/tracesInClass)**2
-
                 print "Var[E(Y|X)] for class", i, "was calculated"
-                print "TEST LEN (5002): ", len(tPowerMeanList)
                 classList.append(tPowerMeanList)
             else:
                 classCountNotIncluded = classCountNotIncluded + 1
@@ -311,13 +309,22 @@ class Kind(object):
 
         print "Total Var[E(Y|X)] for all classes was calculated!"
 
+        lenn = points//parallels*parallels
         for i in range(lenn):
-            globalVarlist[i] = classList[0][i]/(globalVarlist[i]/lenn)
+            globalVarlist[i] = classList[0][i]/globalVarlist[i]/lenn
 
         print "NICV function was calculated!"
 
-        print len(globalVarlist)
-        return 0
+        t = open("nicv", "w")
+        for i in range(lenn):
+            t.write(str(globalVarlist[i]) + ' ')
+        t.close()
+
+        plt.bar(range(0, lenn), globalVarlist, color='g')
+        plt.ylabel('NICV')
+        plt.xlabel('samples')
+        plt.colors()
+        plt.show()
 
     def getText(self):
         return self.text
