@@ -160,6 +160,7 @@ class Kind(object):
 
     def nicv2(self, db, idList, top):
 
+        start_time = time.time()
         idListLen = len(idList)
         errList = []
         meanList = []
@@ -314,6 +315,7 @@ class Kind(object):
             globalVarlist[i] = classList[0][i]/globalVarlist[i]/lenn
 
         print "NICV function was calculated!"
+        print 'Execution time:', time.time() - start_time
 
         t = open("nicv", "w")
         for i in range(lenn):
