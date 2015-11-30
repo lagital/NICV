@@ -181,7 +181,7 @@ class Kind(object):
         tclassList = [0.0] * points
         tMeanList = [0.0] * points
         tPowerMeanList = [0.0] * points
-        parallels = 500
+        parallels = 20
         #tGlobalVarlist = [[]]*parallels
         tGlobalVarlist = [[] for i in range(parallels)]
         classList = []*256
@@ -225,7 +225,7 @@ class Kind(object):
                         parse_data = None
                         byteList.append((int(msg[0:2], 16), idList[j]))
 
-                    if j%20000 == 0:
+                    if j%parallels == 0 and j != 0:
                         print j, "traces were processed."
 
                 for m in range(parallels):
@@ -312,7 +312,7 @@ class Kind(object):
 
         lenn = points//parallels*parallels
         for i in range(lenn):
-            globalVarlist[i] = classList[0][i]/globalVarlist[i]/lenn
+            globalVarlist[i] = math.sqrt(classList[0][i]/globalVarlist[i]/lenn)
 
         print "NICV function was calculated!"
         print 'Execution time:', time.time() - start_time
